@@ -12,6 +12,17 @@
             --card-bg: #ffffff;
             --border-color: #cbd5e1;
             --text-color: #334155;
+            --header-bg: #f1f5f9;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #f1f5f9;
+            --accent-color: #60a5fa;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-color: #cbd5e1;
+            --header-bg: #090d16;
         }
 
         body {
@@ -20,6 +31,7 @@
             color: var(--text-color);
             margin: 0;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -30,12 +42,38 @@
         header {
             text-align: center;
             margin-bottom: 40px;
+            position: relative;
         }
 
         h1 {
             color: var(--primary-color);
             font-size: 2rem;
             margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        /* Botón de Modo Oscuro */
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
         }
 
         .section-title {
@@ -64,6 +102,7 @@
             padding: 16px;
             text-align: center;
             font-weight: bold;
+            color: var(--primary-color);
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             transition: all 0.2s ease;
             display: flex;
@@ -82,14 +121,21 @@
             margin-top: 8px;
         }
 
-        .nodo-select {
+        .nodo-select, .ambito-select {
             width: 100%;
-            padding: 6px;
+            padding: 8px;
             border-radius: 4px;
             border: 1px solid var(--border-color);
             font-size: 0.9rem;
-            background-color: #fff;
+            background-color: var(--card-bg);
+            color: var(--text-color);
             cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.2s ease;
+        }
+
+        .nodo-select:focus, .ambito-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
         }
 
         /* Procesos Grid */
@@ -105,47 +151,32 @@
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .proceso-header {
             text-align: center;
             font-weight: bold;
             font-size: 1.1rem;
+            color: var(--primary-color);
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 12px;
             margin-bottom: 16px;
-            background: #f1f5f9;
+            background: var(--header-bg);
             border-radius: 6px;
             padding: 10px;
         }
 
-        .ambito-item {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .ambito-select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            background-color: #fff;
-            cursor: pointer;
+        .proceso-body {
+            margin-top: 10px;
         }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
 <div class="container">
     <header>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Modu Iluna 🌙</button>
         <h1>Zaintza Ekosistema</h1>
         <p>Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
     </header>
@@ -184,36 +215,17 @@
         <!-- P01 -->
         <div class="proceso-column">
             <div class="proceso-header">
-                P01<br><span style="font-size: 0.85rem; font-weight: normal;">IKASKUNTZA</span>
+                P01<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA</span>
             </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">03.-NAZIOARTEKOTZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">05.-GIZA GARAPENA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">06.-ADIMENAREN KUDEAKETA</option>
+            <div class="proceso-body">
+                <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                    <option value="">-- Hautatu Ámbitoa --</option>
+                    <option value="p01-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                    <option value="p01-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                    <option value="p01-ambito-03">03.-NAZIOARTEKOTZA</option>
+                    <option value="p01-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                    <option value="p01-ambito-05">05.-GIZA GARAPENA</option>
+                    <option value="p01-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
                 </select>
             </div>
         </div>
@@ -221,36 +233,17 @@
         <!-- P02 -->
         <div class="proceso-column">
             <div class="proceso-header">
-                P02<br><span style="font-size: 0.85rem; font-weight: normal;">ANTOLAKETA eta BALIABIDEAK</span>
+                P02<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK</span>
             </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">03.-NAZIOARTEKOTZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">05.-GIZA GARAPENA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">06.-ADIMENAREN KUDEAKETA</option>
+            <div class="proceso-body">
+                <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                    <option value="">-- Hautatu Ámbitoa --</option>
+                    <option value="p02-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                    <option value="p02-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                    <option value="p02-ambito-03">03.-NAZIOARTEKOTZA</option>
+                    <option value="p02-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                    <option value="p02-ambito-05">05.-GIZA GARAPENA</option>
+                    <option value="p02-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
                 </select>
             </div>
         </div>
@@ -258,42 +251,46 @@
         <!-- P03 -->
         <div class="proceso-column">
             <div class="proceso-header">
-                P03<br><span style="font-size: 0.85rem; font-weight: normal;">ERANTZUKIZUN SOZIALA</span>
+                P03<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA</span>
             </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">03.-NAZIOARTEKOTZA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">05.-GIZA GARAPENA</option>
-                </select>
-            </div>
-            <div class="ambito-item">
-                <select class="ambito-select">
-                    <option value="">06.-ADIMENAREN KUDEAKETA</option>
+            <div class="proceso-body">
+                <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                    <option value="">-- Hautatu Ámbitoa --</option>
+                    <option value="p03-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                    <option value="p03-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                    <option value="p03-ambito-03">03.-NAZIOARTEKOTZA</option>
+                    <option value="p03-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                    <option value="p03-ambito-05">05.-GIZA GARAPENA</option>
+                    <option value="p03-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
                 </select>
             </div>
         </div>
 
     </div>
 </div>
+
+<script>
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeBtn');
+        if (body.getAttribute('data-theme') === 'light') {
+            body.setAttribute('data-theme', 'dark');
+            btn.textContent = 'Modu Argia ☀️';
+        } else {
+            body.setAttribute('data-theme', 'light');
+            btn.textContent = 'Modu Iluna 🌙';
+        }
+    }
+
+    function handleProcesoSelect(selectElement) {
+        const selectedValue = selectElement.value;
+        if (selectedValue) {
+            // Aquí puedes redirigir o filtrar según el ámbito seleccionado en el futuro
+            console.log("Aukeratuta:", selectedValue);
+            // Ejemplo: window.location.href = "#" + selectedValue;
+        }
+    }
+</script>
 
 </body>
 </html>
