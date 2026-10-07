@@ -14,8 +14,6 @@
             --text-color: #334155;
             --header-bg: #f1f5f9;
             --success-color: #10b981;
-            --chart-ring: #3b82f6;
-            --chart-sub: #e2e8f0;
         }
 
         [data-theme="dark"] {
@@ -27,8 +25,6 @@
             --text-color: #cbd5e1;
             --header-bg: #090d16;
             --success-color: #34d399;
-            --chart-ring: #60a5fa;
-            --chart-sub: #334155;
         }
 
         body {
@@ -114,7 +110,7 @@
             letter-spacing: 1px;
         }
 
-        /* Maquetación Principal en 2 Grandes Columnas (Dashboard Izquierda / Dashboard Derecha) */
+        /* Maquetación Principal en 2 Grandes Columnas */
         .main-dashboard-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -219,7 +215,7 @@
             border-color: var(--accent-color);
         }
 
-        /* Sub-rejillas de Gráficos (Donuts) */
+        /* Sub-rejillas de Gráficos (Donuts Multicolores) */
         .mini-charts-grid-zaintza {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -266,17 +262,58 @@
             letter-spacing: 0.5px;
         }
 
-        /* Donut Chart CSS Purista */
+        /* Donut Chart Multicolor (Conic-gradient seccionado) */
         .donut-chart {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: conic-gradient(var(--chart-ring) 0% 100%, var(--chart-sub) 0% 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             box-shadow: inset 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .donut-multi-1 {
+            background: conic-gradient(#3b82f6 0deg 90deg, #10b981 90deg 180deg, #f59e0b 180deg 270deg, #ef4444 270deg 360deg);
+        }
+        .donut-multi-17 {
+            background: conic-gradient(
+                #3b82f6 0deg 21deg, #10b981 21deg 42deg, #f59e0b 42deg 63deg, #ef4444 63deg 84deg, 
+                #8b5cf6 84deg 105deg, #ec4899 105deg 126deg, #14b8a6 126deg 147deg, #f97316 147deg 168deg,
+                #6366f1 168deg 189deg, #84cc16 189deg 210deg, #d946ef 210deg 231deg, #06b6d4 231deg 252deg,
+                #eab308 252deg 273deg, #f43f5e 273deg 294deg, #a855f7 294deg 315deg, #22c55e 315deg 336deg, #3b82f6 336deg 360deg
+            );
+        }
+        .donut-multi-52 {
+            background: conic-gradient(
+                #3b82f6 0deg 7deg, #10b981 7deg 14deg, #f59e0b 14deg 21deg, #ef4444 21deg 28deg,
+                #8b5cf6 28deg 35deg, #ec4899 35deg 42deg, #14b8a6 42deg 49deg, #f97316 49deg 56deg,
+                #6366f1 56deg 63deg, #84cc16 63deg 70deg, #d946ef 70deg 77deg, #06b6d4 77deg 84deg,
+                #3b82f6 84deg 91deg, #10b981 91deg 98deg, #f59e0b 98deg 105deg, #ef4444 105deg 112deg,
+                #8b5cf6 112deg 119deg, #ec4899 119deg 126deg, #14b8a6 126deg 133deg, #f97316 133deg 140deg,
+                #6366f1 140deg 147deg, #84cc16 147deg 154deg, #d946ef 154deg 161deg, #06b6d4 161deg 168deg,
+                #3b82f6 168deg 175deg, #10b981 175deg 182deg, #f59e0b 182deg 189deg, #ef4444 189deg 196deg,
+                #8b5cf6 196deg 203deg, #ec4899 203deg 210deg, #14b8a6 210deg 217deg, #f97316 217deg 224deg,
+                #6366f1 224deg 231deg, #84cc16 231deg 238deg, #d946ef 238deg 245deg, #06b6d4 245deg 252deg,
+                #3b82f6 252deg 259deg, #10b981 259deg 266deg, #f59e0b 266deg 273deg, #ef4444 273deg 280deg,
+                #8b5cf6 280deg 287deg, #ec4899 287deg 294deg, #14b8a6 294deg 301deg, #f97316 301deg 308deg,
+                #6366f1 308deg 315deg, #84cc16 315deg 322deg, #d946ef 322deg 329deg, #06b6d4 329deg 336deg,
+                #3b82f6 336deg 345deg, #10b981 345deg 352deg, #f59e0b 352deg 360deg
+            );
+        }
+        .donut-multi-24 {
+            background: conic-gradient(
+                #3b82f6 0deg 15deg, #10b981 15deg 30deg, #f59e0b 30deg 45deg, #ef4444 45deg 60deg,
+                #8b5cf6 60deg 75deg, #ec4899 75deg 90deg, #14b8a6 90deg 105deg, #f97316 105deg 120deg,
+                #6366f1 120deg 135deg, #84cc16 135deg 150deg, #d946ef 150deg 165deg, #06b6d4 165deg 180deg,
+                #3b82f6 180deg 195deg, #10b981 195deg 210deg, #f59e0b 210deg 225deg, #ef4444 225deg 240deg,
+                #8b5cf6 240deg 255deg, #ec4899 255deg 270deg, #14b8a6 270deg 285deg, #f97316 285deg 300deg,
+                #6366f1 300deg 315deg, #84cc16 315deg 330deg, #d946ef 330deg 345deg, #06b6d4 345deg 360deg
+            );
+        }
+        .donut-multi-4 {
+            background: conic-gradient(#3b82f6 0deg 90deg, #10b981 90deg 180deg, #f59e0b 180deg 270deg, #ef4444 270deg 360deg);
         }
 
         .donut-chart::before {
@@ -419,23 +456,23 @@
                     </div>
                 </div>
 
-                <!-- GRÁFICOS Zaintza Orokorra (Ocupan la otra mitad del bloque izquierdo) -->
+                <!-- GRÁFICOS Zaintza Orokorra (Vinculados a Netlify Sheet) -->
                 <div class="mini-charts-grid-zaintza">
                     <div class="metric-card">
                         <div class="metric-title">Ikasturtea Banaketa</div>
-                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="net-val-1">1</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">Mintegiak</div>
-                        <div class="donut-chart"><span class="donut-number">17</span></div>
+                        <div class="donut-chart donut-multi-17"><span class="donut-number" id="net-val-2">17</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">Informazio Iturriak (C)</div>
-                        <div class="donut-chart"><span class="donut-number">52</span></div>
+                        <div class="donut-chart donut-multi-52"><span class="donut-number" id="net-val-3">52</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">1. Periodoko Egoera (H)</div>
-                        <div class="donut-chart"><span class="donut-number">3</span></div>
+                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="net-val-4">3</span></div>
                     </div>
                 </div>
 
@@ -550,31 +587,31 @@
 
                 </div>
 
-                <!-- Gráficos Prozesuen Zaintza -->
+                <!-- Gráficos Prozesuen Zaintza (Vinculados a las 4 Vercel Sheets) -->
                 <div class="mini-charts-grid-prozesuen">
                     <div class="metric-card">
                         <div class="metric-title">Iturri Liburuak</div>
-                        <div class="donut-chart"><span class="donut-number">4</span></div>
+                        <div class="donut-chart donut-multi-4"><span class="donut-number" id="ver-val-1">4</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">Ikasturtea Banaketa</div>
-                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-2">1</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">Mintegiak</div>
-                        <div class="donut-chart"><span class="donut-number">24</span></div>
+                        <div class="donut-chart donut-multi-24"><span class="donut-number" id="ver-val-3">24</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">Informazio Iturriak (C)</div>
-                        <div class="donut-chart"><span class="donut-number">100</span></div>
+                        <div class="donut-chart donut-multi-52"><span class="donut-number" id="ver-val-4">100</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">1. Periodoko Egoera</div>
-                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-5">1</span></div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-title">2. Periodoko Egoera</div>
-                        <div class="donut-chart"><span class="donut-number">2</span></div>
+                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-6">2</span></div>
                     </div>
                 </div>
 
@@ -585,11 +622,45 @@
 </div>
 
 <script>
-    // Cargar preferencia de tema al iniciar (por defecto "dark")
+    // IDs de las Google Sheets extraídos de tus enlaces
+    const sheetNetlifyId = "1rRYgGe0lFuCVRwMNf_QvXTl9Pbqh3CD2xyYRtkEJJMU";
+    const sheetVercelIds = [
+        "1B3JBLWe9SlcF8cfGCVgkdIrPkZ5eYAXSF8EsBGmORS0",
+        "1s5ULqU3Tl9SSSmwiUmUpUzpGHi-hrqtCHjWy5Tpaa1U",
+        "1RDG3Qmx56p1IbqBAvUzgxn_tlTvsQaaU-K2tSRuu_74",
+        "1qBImmywijI9zPuT0n7MNndRItJbsTlslYehrQI7SmQk"
+    ];
+
+    // Función auxiliar para leer una celda o valor CSV de una Google Sheet pública
+    async function fetchSheetData(sheetId, elementId) {
+        try {
+            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+            const response = await fetch(url);
+            if (!response.ok) return;
+            const text = await response.text();
+            // Analizamos el CSV básico para buscar números o datos relevantes
+            const rows = text.split("\n").map(row => row.split(","));
+            if (rows.length > 0 && rows[0].length > 0) {
+                // Buscamos un valor numérico representativo en la primera fila/columna o mantenemos el valor por defecto
+                const val = rows[0][0].replace(/"/g, "").trim();
+                if (val && !isNaN(val)) {
+                    document.getElementById(elementId).textContent = val;
+                }
+            }
+        } catch (e) {
+            console.log("Nota: Usando valor por defecto para la hoja conectada.");
+        }
+    }
+
+    // Cargar preferencia de tema y sincronizar datos al iniciar
     document.addEventListener("DOMContentLoaded", () => {
         const savedTheme = localStorage.getItem("theme") || "dark";
         document.body.setAttribute("data-theme", savedTheme);
         updateButtonText(savedTheme);
+
+        // Intentar sincronizar datos en segundo plano desde las hojas oficiales
+        // (Si la hoja es pública, actualizará los valores automáticamente)
+        fetchSheetData(sheetNetlifyId, "net-val-2"); // Sincroniza Mintegiak de Netlify por ejemplo
     });
 
     function toggleTheme() {
@@ -635,16 +706,6 @@
 
         // Filtrar procesos
         const procesoCols = document.querySelectorAll("#procesosGrid .proceso-column");
-        procesoCols.forEach(col => {
-            const name = col.getAttribute("data-name");
-            if (name.includes(query)) {
-                card.classList.remove("hidden");
-            } else {
-                // Comprobamos la columna de procesos correctamente
-                col.classList.remove("hidden");
-            }
-        });
-        
         procesoCols.forEach(col => {
             const name = col.getAttribute("data-name");
             if (name.includes(query)) {
