@@ -209,6 +209,18 @@
             padding: 10px;
         }
 
+        .proceso-header a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            transition: color 0.2s ease;
+        }
+
+        .proceso-header a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
         .proceso-body {
             margin-top: 10px;
         }
@@ -247,6 +259,7 @@
             <div class="nodo-select-container">
                 <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
                     <option value="">-- Hautatu Agiri / Dashboard --</option>
+                    <option value="https://docs.google.com/spreadsheets/d/1v4R0swVSZ-r-ZpjdLsf-yjMEkc0Cy7k8D5k2WDdidbA/edit?gid=1011140003#gid=1011140003">1 Plan estrategikoa 2023/24-2026/27</option>
                     <option value="https://docs.google.com/spreadsheets/d/1IsM2kJOMXipeT7QVZdI2jh84ZtHPYK103jb8SSDr_Nk/edit#gid=1830533164">01.- Eraldaketa Digitala eta Teknologikoa</option>
                     <option value="https://docs.google.com/spreadsheets/d/15DJZeCgtvA2g8axiCMx6X0Ue6nKsZ1bxQOsvkYlmYI4/edit#gid=1816603427">02.- Berrikuntza eta Ekintzailetza</option>
                     <option value="https://docs.google.com/spreadsheets/d/1MyFJvAlHMaXR9k3SGxMlUY794XHNElfNG53FORelbnw/edit#gid=1830533164">03.- Nazioartekotza</option>
@@ -346,7 +359,9 @@
         <!-- P01 -->
         <div class="proceso-column" data-name="p01 ikaskuntza">
             <div class="proceso-header">
-                P01<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA</span>
+                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.6jdag7f2163u" target="_blank" title="Ireki dokumentua">
+                    P01<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA ↗</span>
+                </a>
             </div>
             <div class="proceso-body">
                 <select class="ambito-select" onchange="handleProcesoSelect(this)">
@@ -364,7 +379,9 @@
         <!-- P02 -->
         <div class="proceso-column" data-name="p02 antolaketa baliabideak">
             <div class="proceso-header">
-                P02<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK</span>
+                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.k98e7fstqw1f" target="_blank" title="Ireki dokumentua">
+                    P02<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK ↗</span>
+                </a>
             </div>
             <div class="proceso-body">
                 <select class="ambito-select" onchange="handleProcesoSelect(this)">
@@ -382,7 +399,9 @@
         <!-- P03 -->
         <div class="proceso-column" data-name="p03 erantzukizun soziala">
             <div class="proceso-header">
-                P03<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA</span>
+                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.n6wva84nyjaw" target="_blank" title="Ireki dokumentua">
+                    P03<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA ↗</span>
+                </a>
             </div>
             <div class="proceso-body">
                 <select class="ambito-select" onchange="handleProcesoSelect(this)">
