@@ -41,7 +41,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
@@ -105,29 +105,64 @@
         }
 
         .section-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary-color);
             border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 8px;
-            margin-top: 40px;
-            margin-bottom: 24px;
+            padding-bottom: 6px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Nodos Grid */
-        .nodos-grid {
+        /* Maquetación Principal en 2 Grandes Columnas (Dashboard Izquierda / Dashboard Derecha) */
+        .main-dashboard-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }
 
-        .nodo-card {
+        @media (max-width: 1200px) {
+            .main-dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-block {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        [data-theme="dark"] .dashboard-block {
+            background: rgba(255,255,255,0.01);
+        }
+
+        /* Bloque Izquierdo: Nodos + Gráficos Zaintza Orokorra */
+        .left-subgrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        /* Bloque Derecho: Procesos + Gráficos Prozesuen Zaintza */
+        .right-subgrid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .left-subgrid, .right-subgrid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .nodo-card, .proceso-column {
             background: var(--card-bg);
             border: 2px solid var(--border-color);
             border-radius: 8px;
-            padding: 16px;
+            padding: 14px;
             text-align: center;
             font-weight: bold;
             color: var(--primary-color);
@@ -136,10 +171,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
         }
 
-        .nodo-card:hover {
+        .nodo-card:hover, .proceso-column:hover {
             border-color: var(--accent-color);
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
@@ -150,19 +184,20 @@
             justify-content: center;
             gap: 8px;
             margin-bottom: 8px;
+            font-size: 0.9rem;
         }
 
         /* Indicador Operativo (Badge) */
         .status-badge {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: var(--success-color);
             border-radius: 50%;
             display: inline-block;
             box-shadow: 0 0 6px var(--success-color);
         }
 
-        .nodo-select-container {
+        .nodo-select-container, .proceso-body {
             width: 100%;
             margin-top: 8px;
         }
@@ -172,7 +207,7 @@
             padding: 8px;
             border-radius: 4px;
             border: 1px solid var(--border-color);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background-color: var(--card-bg);
             color: var(--text-color);
             cursor: pointer;
@@ -184,21 +219,33 @@
             border-color: var(--accent-color);
         }
 
-        /* Sección de Gráficos (Zaintza Orokorra estilo visual) */
-        .metrics-grid {
+        /* Sub-rejillas de Gráficos (Donuts) */
+        .mini-charts-grid-zaintza {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            grid-column: span 2;
+        }
+
+        .mini-charts-grid-prozesuen {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .mini-charts-grid-zaintza, .mini-charts-grid-prozesuen {
+                grid-template-columns: 1fr;
+            }
         }
 
         .metric-card {
             background: var(--card-bg);
             border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -211,32 +258,32 @@
         }
 
         .metric-title {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: bold;
             color: var(--primary-color);
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         /* Donut Chart CSS Purista */
         .donut-chart {
-            width: 110px;
-            height: 110px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: conic-gradient(var(--chart-ring) 0% 100%, var(--chart-sub) 0% 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: inset 0 0 0 4px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 0 3px rgba(0,0,0,0.05);
         }
 
         .donut-chart::before {
             content: "";
             position: absolute;
-            width: 76px;
-            height: 76px;
+            width: 56px;
+            height: 56px;
             background-color: var(--card-bg);
             border-radius: 50%;
             transition: background-color 0.3s ease;
@@ -244,38 +291,29 @@
 
         .donut-number {
             position: relative;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--primary-color);
         }
 
-        /* Procesos Grid */
-        .procesos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
-
-        .proceso-column {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+        /* Procesos Columna Vertical */
+        .procesos-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .proceso-header {
             text-align: center;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--primary-color);
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 16px;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
             background: var(--header-bg);
             border-radius: 6px;
-            padding: 10px;
+            padding: 8px;
         }
 
         .proceso-header a {
@@ -288,10 +326,6 @@
         .proceso-header a:hover {
             color: var(--accent-color);
             text-decoration: underline;
-        }
-
-        .proceso-body {
-            margin-top: 10px;
         }
 
         .hidden {
@@ -313,200 +347,237 @@
         <input type="text" id="globalSearch" class="search-input" placeholder="Bilatu nodoak, prozesuak edo eremuak..." onkeyup="filterContent()">
     </div>
 
-    <!-- ATALAN: NODOAK -->
-    <div class="section-title">NODOAK</div>
-    <div class="nodos-grid" id="nodosGrid">
+    <!-- MAQUETACIÓN EN DOS BLOQUES PRINCIPALES -->
+    <div class="main-dashboard-layout">
         
-        <!-- NODO ESTRATEGIKOA -->
-        <div class="nodo-card" data-name="nodo estrategikoa">
-            <div>
-                <div class="nodo-header-content">
-                    <span class="status-badge" title="Aktibo"></span>
-                    <span>NODO ESTRATEGIKOA</span>
+        <!-- BLOQUE IZQUIERDA: NODOAK + ZAINTZA OROKORRA -->
+        <div class="dashboard-block" id="blockZaintzaOrokorra">
+            <div class="section-title">ZAINTZA OROKORRA</div>
+            <div class="left-subgrid" id="nodosGrid">
+                
+                <!-- NODO ESTRATEGIKOA -->
+                <div class="nodo-card" data-name="nodo estrategikoa">
+                    <div>
+                        <div class="nodo-header-content">
+                            <span class="status-badge" title="Aktibo"></span>
+                            <span>NODO ESTRATEGIKOA</span>
+                        </div>
+                    </div>
+                    <div class="nodo-select-container">
+                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                            <option value="">-- Hautatu Agiri / Dashboard --</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1v4R0swVSZ-r-ZpjdLsf-yjMEkc0Cy7k8D5k2WDdidbA/edit?gid=1011140003#gid=1011140003">1 Plan estrategikoa 2023/24-2026/27</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1IsM2kJOMXipeT7QVZdI2jh84ZtHPYK103jb8SSDr_Nk/edit#gid=1830533164">01.- Eraldaketa Digitala eta Teknologikoa</option>
+                            <option value="https://docs.google.com/spreadsheets/d/15DJZeCgtvA2g8axiCMx6X0Ue6nKsZ1bxQOsvkYlmYI4/edit#gid=1816603427">02.- Berrikuntza eta Ekintzailetza</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1MyFJvAlHMaXR9k3SGxMlUY794XHNElfNG53FORelbnw/edit#gid=1830533164">03.- Nazioartekotza</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1BALj5IZtXRbj6xkdukdNxje8o-fnzedWM-vl1EBD5uE/edit#gid=1830533164">04.- Bioteknologia, Biosorkuntza eta Ongizatea</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1XhfoOYTd2GZ6jzhO176UQLz8lt3I-QpfmVxHLoNVcpk/edit#gid=1830533164">05.- Giza Garapena eta Adimena</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="nodo-select-container">
-                <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                    <option value="">-- Hautatu Agiri / Dashboard --</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1v4R0swVSZ-r-ZpjdLsf-yjMEkc0Cy7k8D5k2WDdidbA/edit?gid=1011140003#gid=1011140003">1 Plan estrategikoa 2023/24-2026/27</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1IsM2kJOMXipeT7QVZdI2jh84ZtHPYK103jb8SSDr_Nk/edit#gid=1830533164">01.- Eraldaketa Digitala eta Teknologikoa</option>
-                    <option value="https://docs.google.com/spreadsheets/d/15DJZeCgtvA2g8axiCMx6X0Ue6nKsZ1bxQOsvkYlmYI4/edit#gid=1816603427">02.- Berrikuntza eta Ekintzailetza</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1MyFJvAlHMaXR9k3SGxMlUY794XHNElfNG53FORelbnw/edit#gid=1830533164">03.- Nazioartekotza</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1BALj5IZtXRbj6xkdukdNxje8o-fnzedWM-vl1EBD5uE/edit#gid=1830533164">04.- Bioteknologia, Biosorkuntza eta Ongizatea</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1XhfoOYTd2GZ6jzhO176UQLz8lt3I-QpfmVxHLoNVcpk/edit#gid=1830533164">05.- Giza Garapena eta Adimena</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- NODO OPERATIBOA -->
-        <div class="nodo-card" data-name="nodo operatiboa">
-            <div>
-                <div class="nodo-header-content">
-                    <span class="status-badge" title="Aktibo"></span>
-                    <span>NODO OPERATIBOA</span>
+                <!-- NODO OPERATIBOA -->
+                <div class="nodo-card" data-name="nodo operatiboa">
+                    <div>
+                        <div class="nodo-header-content">
+                            <span class="status-badge" title="Aktibo"></span>
+                            <span>NODO OPERATIBOA</span>
+                        </div>
+                    </div>
+                    <div class="nodo-select-container">
+                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                            <option value="">-- Hautatu Agiri / Dashboard --</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1MhsOZUyswlaPi4634AFOGPbQqVXOvdFN7lGPK8r855g/edit#gid=1205917384">Operatiboa - 01</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1_1Xgzyi8Zg7kHPaKf3w8w0DB8Lb0oxJd2y7YvgZPWr4/edit#gid=1830533164">Operatiboa - 02</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1bBop_Utv3RsN_5tXyK4bz76GsxS2xXZEIJbKB2S5hOE/edit#gid=1830533164">Operatiboa - 03</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1RcXnmO77-wf4M8g1UhGF5lhy_QfBZZfkwx4nDUgYtWM/edit#gid=1830533164">Operatiboa - 04</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1s-SPsqL00piTDfMML-OOgQR8DkFpDv6t2THZlK16mXs/edit#gid=1830533164">Operatiboa - 05</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1pRCEB01zpYIFPJakJ1EBQavC7uRkdXK7hWOEmVrIcpg/edit#gid=1830533164">Operatiboa - 06</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1D1SYIHepFYGrBVi_OLIaCyMa89WGdlqOnmNQe2GIOis/edit#gid=1830533164">Operatiboa - 07</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1OskiHrllZTgOA9aNY_QhHCyGssWW6hXkiCUttIBBZ1s/edit#gid=1830533164">Operatiboa - 08</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1Lww85mqRHnL-ewqXallt_Le85MDCMlxXr2R97FHTF1M/edit#gid=1438716883">Operatiboa - 09</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="nodo-select-container">
-                <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                    <option value="">-- Hautatu Agiri / Dashboard --</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1MhsOZUyswlaPi4634AFOGPbQqVXOvdFN7lGPK8r855g/edit#gid=1205917384">Operatiboa - 01</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1_1Xgzyi8Zg7kHPaKf3w8w0DB8Lb0oxJd2y7YvgZPWr4/edit#gid=1830533164">Operatiboa - 02</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1bBop_Utv3RsN_5tXyK4bz76GsxS2xXZEIJbKB2S5hOE/edit#gid=1830533164">Operatiboa - 03</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1RcXnmO77-wf4M8g1UhGF5lhy_QfBZZfkwx4nDUgYtWM/edit#gid=1830533164">Operatiboa - 04</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1s-SPsqL00piTDfMML-OOgQR8DkFpDv6t2THZlK16mXs/edit#gid=1830533164">Operatiboa - 05</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1pRCEB01zpYIFPJakJ1EBQavC7uRkdXK7hWOEmVrIcpg/edit#gid=1830533164">Operatiboa - 06</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1D1SYIHepFYGrBVi_OLIaCyMa89WGdlqOnmNQe2GIOis/edit#gid=1830533164">Operatiboa - 07</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1OskiHrllZTgOA9aNY_QhHCyGssWW6hXkiCUttIBBZ1s/edit#gid=1830533164">Operatiboa - 08</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1Lww85mqRHnL-ewqXallt_Le85MDCMlxXr2R97FHTF1M/edit#gid=1438716883">Operatiboa - 09</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- NODO SORTZAILEA -->
-        <div class="nodo-card" data-name="nodo sortzailea">
-            <div>
-                <div class="nodo-header-content">
-                    <span class="status-badge" title="Aktibo"></span>
-                    <span>NODO SORTZAILEA</span>
+                <!-- NODO SORTZAILEA -->
+                <div class="nodo-card" data-name="nodo sortzailea">
+                    <div>
+                        <div class="nodo-header-content">
+                            <span class="status-badge" title="Aktibo"></span>
+                            <span>NODO SORTZAILEA</span>
+                        </div>
+                    </div>
+                    <div class="nodo-select-container">
+                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                            <option value="">-- Hautatu Dashboard --</option>
+                            <option value="https://zaintzaorokorra.netlify.app/">Zaintza Orokorra (Netlify)</option>
+                            <option value="https://prozesuendashboarada.vercel.app/">Prozesuen Dashboarda (Vercel)</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1hznp-8XoQ4NcbHgdjzzNKh6Poo21IYEUHoAeAmcyo64/edit#gid=1830533164">Sortzailea - Eremu 1</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1rVrxOhPmiY4JblSQnHX_QpKCyxABBszu69siVAckBUU/edit#gid=1830533164">Sortzailea - Eremu 2</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="nodo-select-container">
-                <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                    <option value="">-- Hautatu Dashboard --</option>
-                    <option value="https://zaintzaorokorra.netlify.app/">Zaintza Orokorra (Netlify)</option>
-                    <option value="https://prozesuendashboarada.vercel.app/">Prozesuen Dashboarda (Vercel)</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1hznp-8XoQ4NcbHgdjzzNKh6Poo21IYEUHoAeAmcyo64/edit#gid=1830533164">Sortzailea - Eremu 1</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1rVrxOhPmiY4JblSQnHX_QpKCyxABBszu69siVAckBUU/edit#gid=1830533164">Sortzailea - Eremu 2</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- ZERBITZUEN NODO -->
-        <div class="nodo-card" data-name="serbitzuen nodoa">
-            <div>
-                <div class="nodo-header-content">
-                    <span class="status-badge" title="Aktibo"></span>
-                    <span>ZERBITZUEN NODOA</span>
+                <!-- GRÁFICOS Zaintza Orokorra (Ocupan la otra mitad del bloque izquierdo) -->
+                <div class="mini-charts-grid-zaintza">
+                    <div class="metric-card">
+                        <div class="metric-title">Ikasturtea Banaketa</div>
+                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Mintegiak</div>
+                        <div class="donut-chart"><span class="donut-number">17</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Informazio Iturriak (C)</div>
+                        <div class="donut-chart"><span class="donut-number">52</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">1. Periodoko Egoera (H)</div>
+                        <div class="donut-chart"><span class="donut-number">3</span></div>
+                    </div>
                 </div>
-            </div>
-            <div class="nodo-select-container">
-                <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                    <option value="">-- Hautatu Zerbitzua --</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1JdaJOHaNCQACOovdSSnWbg0tifY7gs3r2jMXlfQuUrg/edit#gid=1830533164">Zerbitzua - 01</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1FupaGS1jwtvIP3k3bcuKUiQE7GBrv5VELSAVNLA9CMM/edit#gid=1830533164">Zerbitzua - 02</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1gbJsNDvROAzb7TWIT3a28tIi76joOh1aWaYEgK7CgxA/edit#gid=1830533164">Zerbitzua - 03</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1INmbvJExCn2RsTBvW5sDKctnLWKSGn22diBeTN3bjZE/edit#gid=1830533164">Zerbitzua - 04</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1yoLcJGh-LhDUDzzNYHZzZROe_XTxszG056Rly3R8CJE/edit#gid=1830533164">Zerbitzua - 05</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1EdSRGzpNhKCWr5ui7PaA6JjpBmOZDJzkTtN4EVWbT_w/edit#gid=1830533164">Zerbitzua - 06</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1fZCdG-flBYQ0pcEV5BnLmjwYn-wUohmUdmEMtAUQrTU/edit#gid=1830533164">Zerbitzua - 07</option>
-                </select>
-            </div>
-        </div>
 
-        <!-- SISTEMAREN KUDEAKETA -->
-        <div class="nodo-card" data-name="sistemaren kudeaketa">
-            <div>
-                <div class="nodo-header-content">
-                    <span class="status-badge" title="Aktibo"></span>
-                    <span>KUDEAKETA SISTEMA</span>
+                <!-- ZERBITZUEN NODO -->
+                <div class="nodo-card" data-name="serbitzuen nodoa">
+                    <div>
+                        <div class="nodo-header-content">
+                            <span class="status-badge" title="Aktibo"></span>
+                            <span>ZERBITZUEN NODOA</span>
+                        </div>
+                    </div>
+                    <div class="nodo-select-container">
+                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                            <option value="">-- Hautatu Zerbitzua --</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1JdaJOHaNCQACOovdSSnWbg0tifY7gs3r2jMXlfQuUrg/edit#gid=1830533164">Zerbitzua - 01</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1FupaGS1jwtvIP3k3bcuKUiQE7GBrv5VELSAVNLA9CMM/edit#gid=1830533164">Zerbitzua - 02</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1gbJsNDvROAzb7TWIT3a28tIi76joOh1aWaYEgK7CgxA/edit#gid=1830533164">Zerbitzua - 03</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1INmbvJExCn2RsTBvW5sDKctnLWKSGn22diBeTN3bjZE/edit#gid=1830533164">Zerbitzua - 04</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1yoLcJGh-LhDUDzzNYHZzZROe_XTxszG056Rly3R8CJE/edit#gid=1830533164">Zerbitzua - 05</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1EdSRGzpNhKCWr5ui7PaA6JjpBmOZDJzkTtN4EVWbT_w/edit#gid=1830533164">Zerbitzua - 06</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1fZCdG-flBYQ0pcEV5BnLmjwYn-wUohmUdmEMtAUQrTU/edit#gid=1830533164">Zerbitzua - 07</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="nodo-select-container">
-                <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                    <option value="">-- Hautatu Kudeaketa --</option>
-                    <option value="https://docs.google.com/spreadsheets/d/1_aYBZcozbSbZGQqs9fbDinf2HbBkFCkgvwFCY13HjBg/edit#gid=1830533164">Kudeaketa Nagusia</option>
-                </select>
+
+                <!-- SISTEMAREN KUDEAKETA -->
+                <div class="nodo-card" data-name="sistemaren kudeaketa">
+                    <div>
+                        <div class="nodo-header-content">
+                            <span class="status-badge" title="Aktibo"></span>
+                            <span>KUDEAKETA SISTEMA</span>
+                        </div>
+                    </div>
+                    <div class="nodo-select-container">
+                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
+                            <option value="">-- Hautatu Kudeaketa --</option>
+                            <option value="https://docs.google.com/spreadsheets/d/1_aYBZcozbSbZGQqs9fbDinf2HbBkFCkgvwFCY13HjBg/edit#gid=1830533164">Kudeaketa Nagusia</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-    </div>
+        <!-- BLOQUE DERECHA: PROZESUAK + PROZESUEN ZAINTZA -->
+        <div class="dashboard-block" id="blockProzesuenZaintza">
+            <div class="section-title">PROZESUEN ZAINTZA</div>
+            <div class="right-subgrid">
+                
+                <!-- Pila vertical de Procesos P01, P02, P03 -->
+                <div class="procesos-vertical-stack" id="procesosGrid">
+                    
+                    <!-- P01 -->
+                    <div class="proceso-column" data-name="p01 ikaskuntza">
+                        <div class="proceso-header">
+                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.6jdag7f2163u" target="_blank" title="Ireki dokumentua">
+                                P01<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA ↗</span>
+                            </a>
+                        </div>
+                        <div class="proceso-body">
+                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                                <option value="">-- Hautatu Ámbitoa --</option>
+                                <option value="p01-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                                <option value="p01-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                                <option value="p01-ambito-03">03.-NAZIOARTEKOTZA</option>
+                                <option value="p01-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                                <option value="p01-ambito-05">05.-GIZA GARAPENA</option>
+                                <option value="p01-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <!-- ATALAN: METRIKAK ETA ADIERAZLEAK (Zaintza Orokorra) -->
-    <div class="section-title">METRIKAK ETA ADIERAZLEAK (ZAINTZA OROKORRA)</div>
-    <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-title">Ikasturtea Banaketa</div>
-            <div class="donut-chart"><span class="donut-number">1</span></div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-title">Mintegiak</div>
-            <div class="donut-chart"><span class="donut-number">17</span></div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-title">Informazio Iturriak (C)</div>
-            <div class="donut-chart"><span class="donut-number">52</span></div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-title">1. Periodoko Egoera (H)</div>
-            <div class="donut-chart"><span class="donut-number">3</span></div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-title">2. Periodoko Egoera (L)</div>
-            <div class="donut-chart"><span class="donut-number">2</span></div>
-        </div>
-    </div>
+                    <!-- P02 -->
+                    <div class="proceso-column" data-name="p02 antolaketa baliabideak">
+                        <div class="proceso-header">
+                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.k98e7fstqw1f" target="_blank" title="Ireki dokumentua">
+                                P02<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK ↗</span>
+                            </a>
+                        </div>
+                        <div class="proceso-body">
+                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                                <option value="">-- Hautatu Ámbitoa --</option>
+                                <option value="p02-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                                <option value="p02-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                                <option value="p02-ambito-03">03.-NAZIOARTEKOTZA</option>
+                                <option value="p02-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                                <option value="p02-ambito-05">05.-GIZA GARAPENA</option>
+                                <option value="p02-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
+                            </select>
+                        </div>
+                    </div>
 
-    <!-- ATALAN: PROZESUAK -->
-    <div class="section-title">PROZESUAK</div>
-    <div class="procesos-grid" id="procesosGrid">
-        
-        <!-- P01 -->
-        <div class="proceso-column" data-name="p01 ikaskuntza">
-            <div class="proceso-header">
-                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.6jdag7f2163u" target="_blank" title="Ireki dokumentua">
-                    P01<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA ↗</span>
-                </a>
-            </div>
-            <div class="proceso-body">
-                <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                    <option value="">-- Hautatu Ámbitoa --</option>
-                    <option value="p01-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                    <option value="p01-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                    <option value="p01-ambito-03">03.-NAZIOARTEKOTZA</option>
-                    <option value="p01-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                    <option value="p01-ambito-05">05.-GIZA GARAPENA</option>
-                    <option value="p01-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                </select>
-            </div>
-        </div>
+                    <!-- P03 -->
+                    <div class="proceso-column" data-name="p03 erantzukizun soziala">
+                        <div class="proceso-header">
+                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.n6wva84nyjaw" target="_blank" title="Ireki dokumentua">
+                                P03<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA ↗</span>
+                            </a>
+                        </div>
+                        <div class="proceso-body">
+                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
+                                <option value="">-- Hautatu Ámbitoa --</option>
+                                <option value="p03-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
+                                <option value="p03-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
+                                <option value="p03-ambito-03">03.-NAZIOARTEKOTZA</option>
+                                <option value="p03-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
+                                <option value="p03-ambito-05">05.-GIZA GARAPENA</option>
+                                <option value="p03-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
+                            </select>
+                        </div>
+                    </div>
 
-        <!-- P02 -->
-        <div class="proceso-column" data-name="p02 antolaketa baliabideak">
-            <div class="proceso-header">
-                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.k98e7fstqw1f" target="_blank" title="Ireki dokumentua">
-                    P02<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK ↗</span>
-                </a>
-            </div>
-            <div class="proceso-body">
-                <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                    <option value="">-- Hautatu Ámbitoa --</option>
-                    <option value="p02-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                    <option value="p02-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                    <option value="p02-ambito-03">03.-NAZIOARTEKOTZA</option>
-                    <option value="p02-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                    <option value="p02-ambito-05">05.-GIZA GARAPENA</option>
-                    <option value="p02-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                </select>
-            </div>
-        </div>
+                </div>
 
-        <!-- P03 -->
-        <div class="proceso-column" data-name="p03 erantzukizun soziala">
-            <div class="proceso-header">
-                <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.n6wva84nyjaw" target="_blank" title="Ireki dokumentua">
-                    P03<br><span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA ↗</span>
-                </a>
-            </div>
-            <div class="proceso-body">
-                <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                    <option value="">-- Hautatu Ámbitoa --</option>
-                    <option value="p03-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                    <option value="p03-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                    <option value="p03-ambito-03">03.-NAZIOARTEKOTZA</option>
-                    <option value="p03-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                    <option value="p03-ambito-05">05.-GIZA GARAPENA</option>
-                    <option value="p03-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                </select>
+                <!-- Gráficos Prozesuen Zaintza -->
+                <div class="mini-charts-grid-prozesuen">
+                    <div class="metric-card">
+                        <div class="metric-title">Iturri Liburuak</div>
+                        <div class="donut-chart"><span class="donut-number">4</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Ikasturtea Banaketa</div>
+                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Mintegiak</div>
+                        <div class="donut-chart"><span class="donut-number">24</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Informazio Iturriak (C)</div>
+                        <div class="donut-chart"><span class="donut-number">100</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">1. Periodoko Egoera</div>
+                        <div class="donut-chart"><span class="donut-number">1</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">2. Periodoko Egoera</div>
+                        <div class="donut-chart"><span class="donut-number">2</span></div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -564,6 +635,16 @@
 
         // Filtrar procesos
         const procesoCols = document.querySelectorAll("#procesosGrid .proceso-column");
+        procesoCols.forEach(col => {
+            const name = col.getAttribute("data-name");
+            if (name.includes(query)) {
+                card.classList.remove("hidden");
+            } else {
+                // Comprobamos la columna de procesos correctamente
+                col.classList.remove("hidden");
+            }
+        });
+        
         procesoCols.forEach(col => {
             const name = col.getAttribute("data-name");
             if (name.includes(query)) {
