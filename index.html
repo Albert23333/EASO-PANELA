@@ -1,721 +1,443 @@
 <!DOCTYPE html>
 <html lang="eu">
 <head>
+<script>
+    (function() {
+        var user = prompt("Introduce el usuario:");
+        var pass = prompt("Introduce la contraseña:");
+        if (user !== "easo" || pass !== "easo2026") {
+            document.documentElement.innerHTML = "<h1>Acceso no autorizado</h1>";
+            throw new Error("Acceso denegado");
+        }
+    })();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaintza Ekosistema - Dashboard Nagusia</title>
-    <style>
-        :root {
-            --primary-color: #1e293b;
-            --accent-color: #3b82f6;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --border-color: #cbd5e1;
-            --text-color: #334155;
-            --header-bg: #f1f5f9;
-            --success-color: #10b981;
-        }
-
-        [data-theme="dark"] {
-            --primary-color: #f1f5f9;
-            --accent-color: #60a5fa;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --border-color: #334155;
-            --text-color: #cbd5e1;
-            --header-bg: #090d16;
-            --success-color: #34d399;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-
-        /* Botón de Modo Oscuro */
-        .theme-toggle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--accent-color);
-        }
-
-        /* Buscador Global */
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto 30px auto;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px 16px;
-            border-radius: 8px;
-            border: 2px solid var(--border-color);
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: border-color 0.2s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 6px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Maquetación Principal en 2 Grandes Columnas */
-        .main-dashboard-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 1200px) {
-            .main-dashboard-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .dashboard-block {
-            background: rgba(0,0,0,0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        [data-theme="dark"] .dashboard-block {
-            background: rgba(255,255,255,0.01);
-        }
-
-        /* Bloque Izquierdo: Nodos + Gráficos Zaintza Orokorra */
-        .left-subgrid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        /* Bloque Derecho: Procesos + Gráficos Prozesuen Zaintza */
-        .right-subgrid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .left-subgrid, .right-subgrid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .nodo-card, .proceso-column {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 14px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--primary-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .nodo-card:hover, .proceso-column:hover {
-            border-color: var(--accent-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .nodo-header-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        /* Indicador Operativo (Badge) */
-        .status-badge {
-            width: 8px;
-            height: 8px;
-            background-color: var(--success-color);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 6px var(--success-color);
-        }
-
-        .nodo-select-container, .proceso-body {
-            width: 100%;
-            margin-top: 8px;
-        }
-
-        .nodo-select, .ambito-select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            font-size: 0.8rem;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.2s ease;
-        }
-
-        .nodo-select:focus, .ambito-select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        /* Sub-rejillas de Gráficos (Donuts Multicolores) */
-        .mini-charts-grid-zaintza {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            grid-column: span 2;
-        }
-
-        .mini-charts-grid-prozesuen {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        @media (max-width: 600px) {
-            .mini-charts-grid-zaintza, .mini-charts-grid-prozesuen {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .metric-card {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: border-color 0.2s ease;
-        }
-
-        .metric-card:hover {
-            border-color: var(--accent-color);
-        }
-
-        .metric-title {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Donut Chart Multicolor (Conic-gradient seccionado) */
-        .donut-chart {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: inset 0 0 0 3px rgba(0,0,0,0.05);
-        }
-
-        .donut-multi-1 {
-            background: conic-gradient(#3b82f6 0deg 90deg, #10b981 90deg 180deg, #f59e0b 180deg 270deg, #ef4444 270deg 360deg);
-        }
-        .donut-multi-17 {
-            background: conic-gradient(
-                #3b82f6 0deg 21deg, #10b981 21deg 42deg, #f59e0b 42deg 63deg, #ef4444 63deg 84deg, 
-                #8b5cf6 84deg 105deg, #ec4899 105deg 126deg, #14b8a6 126deg 147deg, #f97316 147deg 168deg,
-                #6366f1 168deg 189deg, #84cc16 189deg 210deg, #d946ef 210deg 231deg, #06b6d4 231deg 252deg,
-                #eab308 252deg 273deg, #f43f5e 273deg 294deg, #a855f7 294deg 315deg, #22c55e 315deg 336deg, #3b82f6 336deg 360deg
-            );
-        }
-        .donut-multi-52 {
-            background: conic-gradient(
-                #3b82f6 0deg 7deg, #10b981 7deg 14deg, #f59e0b 14deg 21deg, #ef4444 21deg 28deg,
-                #8b5cf6 28deg 35deg, #ec4899 35deg 42deg, #14b8a6 42deg 49deg, #f97316 49deg 56deg,
-                #6366f1 56deg 63deg, #84cc16 63deg 70deg, #d946ef 70deg 77deg, #06b6d4 77deg 84deg,
-                #3b82f6 84deg 91deg, #10b981 91deg 98deg, #f59e0b 98deg 105deg, #ef4444 105deg 112deg,
-                #8b5cf6 112deg 119deg, #ec4899 119deg 126deg, #14b8a6 126deg 133deg, #f97316 133deg 140deg,
-                #6366f1 140deg 147deg, #84cc16 147deg 154deg, #d946ef 154deg 161deg, #06b6d4 161deg 168deg,
-                #3b82f6 168deg 175deg, #10b981 175deg 182deg, #f59e0b 182deg 189deg, #ef4444 189deg 196deg,
-                #8b5cf6 196deg 203deg, #ec4899 203deg 210deg, #14b8a6 210deg 217deg, #f97316 217deg 224deg,
-                #6366f1 224deg 231deg, #84cc16 231deg 238deg, #d946ef 238deg 245deg, #06b6d4 245deg 252deg,
-                #3b82f6 252deg 259deg, #10b981 259deg 266deg, #f59e0b 266deg 273deg, #ef4444 273deg 280deg,
-                #8b5cf6 280deg 287deg, #ec4899 287deg 294deg, #14b8a6 294deg 301deg, #f97316 301deg 308deg,
-                #6366f1 308deg 315deg, #84cc16 315deg 322deg, #d946ef 322deg 329deg, #06b6d4 329deg 336deg,
-                #3b82f6 336deg 345deg, #10b981 345deg 352deg, #f59e0b 352deg 360deg
-            );
-        }
-        .donut-multi-24 {
-            background: conic-gradient(
-                #3b82f6 0deg 15deg, #10b981 15deg 30deg, #f59e0b 30deg 45deg, #ef4444 45deg 60deg,
-                #8b5cf6 60deg 75deg, #ec4899 75deg 90deg, #14b8a6 90deg 105deg, #f97316 105deg 120deg,
-                #6366f1 120deg 135deg, #84cc16 135deg 150deg, #d946ef 150deg 165deg, #06b6d4 165deg 180deg,
-                #3b82f6 180deg 195deg, #10b981 195deg 210deg, #f59e0b 210deg 225deg, #ef4444 225deg 240deg,
-                #8b5cf6 240deg 255deg, #ec4899 255deg 270deg, #14b8a6 270deg 285deg, #f97316 285deg 300deg,
-                #6366f1 300deg 315deg, #84cc16 315deg 330deg, #d946ef 330deg 345deg, #06b6d4 345deg 360deg
-            );
-        }
-        .donut-multi-4 {
-            background: conic-gradient(#3b82f6 0deg 90deg, #10b981 90deg 180deg, #f59e0b 180deg 270deg, #ef4444 270deg 360deg);
-        }
-
-        .donut-chart::before {
-            content: "";
-            position: absolute;
-            width: 56px;
-            height: 56px;
-            background-color: var(--card-bg);
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .donut-number {
-            position: relative;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        /* Procesos Columna Vertical */
-        .procesos-vertical-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .proceso-header {
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.95rem;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-            background: var(--header-bg);
-            border-radius: 6px;
-            padding: 8px;
-        }
-
-        .proceso-header a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-            transition: color 0.2s ease;
-        }
-
-        .proceso-header a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
+    <title>Zaintza Ekosistema - Dashboard Bateratua</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- AlpineJS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- PapaParse para CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body data-theme="dark">
+<body :class="darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'" class="font-sans antialiased min-h-screen p-6 transition-colors duration-300" x-data="dashboardData()" x-init="init()" :style="darkMode ? 'background-color: #0f172a;' : 'background-color: #f8fafc;'">
 
-<div class="container">
-    <header>
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Modu Argia ☀️</button>
-        <h1>Zaintza Ekosistema</h1>
-        <p>Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
-    </header>
-
-    <!-- BUSCADOR GLOBAL -->
-    <div class="search-container">
-        <input type="text" id="globalSearch" class="search-input" placeholder="Bilatu nodoak, prozesuak edo eremuak..." onkeyup="filterContent()">
-    </div>
-
-    <!-- MAQUETACIÓN EN DOS BLOQUES PRINCIPALES -->
-    <div class="main-dashboard-layout">
+    <div class="max-w-7xl mx-auto space-y-6">
         
-        <!-- BLOQUE IZQUIERDA: NODOAK + ZAINTZA OROKORRA -->
-        <div class="dashboard-block" id="blockZaintzaOrokorra">
-            <div class="section-title">ZAINTZA OROKORRA</div>
-            <div class="left-subgrid" id="nodosGrid">
-                
-                <!-- NODO ESTRATEGIKOA -->
-                <div class="nodo-card" data-name="nodo estrategikoa">
-                    <div>
-                        <div class="nodo-header-content">
-                            <span class="status-badge" title="Aktibo"></span>
-                            <span>NODO ESTRATEGIKOA</span>
-                        </div>
-                    </div>
-                    <div class="nodo-select-container">
-                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                            <option value="">-- Hautatu Agiri / Dashboard --</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1v4R0swVSZ-r-ZpjdLsf-yjMEkc0Cy7k8D5k2WDdidbA/edit?gid=1011140003#gid=1011140003">1 Plan estrategikoa 2023/24-2026/27</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1IsM2kJOMXipeT7QVZdI2jh84ZtHPYK103jb8SSDr_Nk/edit#gid=1830533164">01.- Eraldaketa Digitala eta Teknologikoa</option>
-                            <option value="https://docs.google.com/spreadsheets/d/15DJZeCgtvA2g8axiCMx6X0Ue6nKsZ1bxQOsvkYlmYI4/edit#gid=1816603427">02.- Berrikuntza eta Ekintzailetza</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1MyFJvAlHMaXR9k3SGxMlUY794XHNElfNG53FORelbnw/edit#gid=1830533164">03.- Nazioartekotza</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1BALj5IZtXRbj6xkdukdNxje8o-fnzedWM-vl1EBD5uE/edit#gid=1830533164">04.- Bioteknologia, Biosorkuntza eta Ongizatea</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1XhfoOYTd2GZ6jzhO176UQLz8lt3I-QpfmVxHLoNVcpk/edit#gid=1830533164">05.- Giza Garapena eta Adimena</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- NODO OPERATIBOA -->
-                <div class="nodo-card" data-name="nodo operatiboa">
-                    <div>
-                        <div class="nodo-header-content">
-                            <span class="status-badge" title="Aktibo"></span>
-                            <span>NODO OPERATIBOA</span>
-                        </div>
-                    </div>
-                    <div class="nodo-select-container">
-                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                            <option value="">-- Hautatu Agiri / Dashboard --</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1MhsOZUyswlaPi4634AFOGPbQqVXOvdFN7lGPK8r855g/edit#gid=1205917384">Operatiboa - 01</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1_1Xgzyi8Zg7kHPaKf3w8w0DB8Lb0oxJd2y7YvgZPWr4/edit#gid=1830533164">Operatiboa - 02</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1bBop_Utv3RsN_5tXyK4bz76GsxS2xXZEIJbKB2S5hOE/edit#gid=1830533164">Operatiboa - 03</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1RcXnmO77-wf4M8g1UhGF5lhy_QfBZZfkwx4nDUgYtWM/edit#gid=1830533164">Operatiboa - 04</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1s-SPsqL00piTDfMML-OOgQR8DkFpDv6t2THZlK16mXs/edit#gid=1830533164">Operatiboa - 05</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1pRCEB01zpYIFPJakJ1EBQavC7uRkdXK7hWOEmVrIcpg/edit#gid=1830533164">Operatiboa - 06</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1D1SYIHepFYGrBVi_OLIaCyMa89WGdlqOnmNQe2GIOis/edit#gid=1830533164">Operatiboa - 07</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1OskiHrllZTgOA9aNY_QhHCyGssWW6hXkiCUttIBBZ1s/edit#gid=1830533164">Operatiboa - 08</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1Lww85mqRHnL-ewqXallt_Le85MDCMlxXr2R97FHTF1M/edit#gid=1438716883">Operatiboa - 09</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- NODO SORTZAILEA -->
-                <div class="nodo-card" data-name="nodo sortzailea">
-                    <div>
-                        <div class="nodo-header-content">
-                            <span class="status-badge" title="Aktibo"></span>
-                            <span>NODO SORTZAILEA</span>
-                        </div>
-                    </div>
-                    <div class="nodo-select-container">
-                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                            <option value="">-- Hautatu Dashboard --</option>
-                            <option value="https://zaintzaorokorra.netlify.app/">Zaintza Orokorra (Netlify)</option>
-                            <option value="https://prozesuendashboarada.vercel.app/">Prozesuen Dashboarda (Vercel)</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1hznp-8XoQ4NcbHgdjzzNKh6Poo21IYEUHoAeAmcyo64/edit#gid=1830533164">Sortzailea - Eremu 1</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1rVrxOhPmiY4JblSQnHX_QpKCyxABBszu69siVAckBUU/edit#gid=1830533164">Sortzailea - Eremu 2</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- GRÁFICOS Zaintza Orokorra (Vinculados a Netlify Sheet) -->
-                <div class="mini-charts-grid-zaintza">
-                    <div class="metric-card">
-                        <div class="metric-title">Ikasturtea Banaketa</div>
-                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="net-val-1">1</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Mintegiak</div>
-                        <div class="donut-chart donut-multi-17"><span class="donut-number" id="net-val-2">17</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Informazio Iturriak (C)</div>
-                        <div class="donut-chart donut-multi-52"><span class="donut-number" id="net-val-3">52</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">1. Periodoko Egoera (H)</div>
-                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="net-val-4">3</span></div>
-                    </div>
-                </div>
-
-                <!-- ZERBITZUEN NODO -->
-                <div class="nodo-card" data-name="serbitzuen nodoa">
-                    <div>
-                        <div class="nodo-header-content">
-                            <span class="status-badge" title="Aktibo"></span>
-                            <span>ZERBITZUEN NODOA</span>
-                        </div>
-                    </div>
-                    <div class="nodo-select-container">
-                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                            <option value="">-- Hautatu Zerbitzua --</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1JdaJOHaNCQACOovdSSnWbg0tifY7gs3r2jMXlfQuUrg/edit#gid=1830533164">Zerbitzua - 01</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1FupaGS1jwtvIP3k3bcuKUiQE7GBrv5VELSAVNLA9CMM/edit#gid=1830533164">Zerbitzua - 02</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1gbJsNDvROAzb7TWIT3a28tIi76joOh1aWaYEgK7CgxA/edit#gid=1830533164">Zerbitzua - 03</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1INmbvJExCn2RsTBvW5sDKctnLWKSGn22diBeTN3bjZE/edit#gid=1830533164">Zerbitzua - 04</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1yoLcJGh-LhDUDzzNYHZzZROe_XTxszG056Rly3R8CJE/edit#gid=1830533164">Zerbitzua - 05</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1EdSRGzpNhKCWr5ui7PaA6JjpBmOZDJzkTtN4EVWbT_w/edit#gid=1830533164">Zerbitzua - 06</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1fZCdG-flBYQ0pcEV5BnLmjwYn-wUohmUdmEMtAUQrTU/edit#gid=1830533164">Zerbitzua - 07</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- SISTEMAREN KUDEAKETA -->
-                <div class="nodo-card" data-name="sistemaren kudeaketa">
-                    <div>
-                        <div class="nodo-header-content">
-                            <span class="status-badge" title="Aktibo"></span>
-                            <span>KUDEAKETA SISTEMA</span>
-                        </div>
-                    </div>
-                    <div class="nodo-select-container">
-                        <select class="nodo-select" onchange="if(this.value) window.open(this.value, '_blank')">
-                            <option value="">-- Hautatu Kudeaketa --</option>
-                            <option value="https://docs.google.com/spreadsheets/d/1_aYBZcozbSbZGQqs9fbDinf2HbBkFCkgvwFCY13HjBg/edit#gid=1830533164">Kudeaketa Nagusia</option>
-                        </select>
-                    </div>
-                </div>
-
+        <!-- CABECERA -->
+        <header :class="darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-slate-100 text-slate-900'" class="p-6 rounded-2xl shadow-sm border flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-colors">
+            <div>
+                <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
+                <p class="text-sm opacity-70 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
             </div>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Botón Modo Oscuro / Claro -->
+                <button @click="darkMode = !darkMode; initCharts()" :class="darkMode ? 'bg-slate-700 hover:bg-slate-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-800'" class="px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer">
+                    <span x-show="!darkMode">🌙 Modu Iluna</span>
+                    <span x-show="darkMode">☀ Modu Argia</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- BARRA DE BÚSQUEDA Y FILTROS -->
+        <section :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'" class="p-4 rounded-2xl shadow-sm border grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3 transition-colors">
+            <div class="sm:col-span-2">
+                <input type="text" placeholder="Bilatu nodoak, prozesuak edo eremuak..." :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+                <select x-model="selectedLibro" @change="selectedMintegia = ''; updateCharts()" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Nodo Globala</option>
+                    <template x-for="libro in uniqueLibros" :key="libro">
+                        <option :value="libro" x-text="libro"></option>
+                    </template>
+                </select>
+            </div>
+            <div>
+                <select x-model="selectedCurso" @change="updateCharts()" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Prozesu Mota</option>
+                    <template x-for="curso in uniqueCursos" :key="curso">
+                        <option :value="curso" x-text="curso"></option>
+                    </template>
+                </select>
+            </div>
+            <div>
+                <select x-model="selectedMintegia" @change="updateCharts()" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Esparrua</option>
+                    <template x-for="mintegia in uniqueMintegias" :key="mintegia">
+                        <option :value="mintegia" x-text="mintegia"></option>
+                    </template>
+                </select>
+            </div>
+            <div>
+                <select x-model="selectedEgoera1" @change="updateCharts()" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-100' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Egoera 1</option>
+                    <template x-for="eg in uniqueEgoera1" :key="eg">
+                        <option :value="eg" x-text="eg"></option>
+                    </template>
+                </select>
+            </div>
+        </section>
+
+        <!-- ESTRUCTURA PRINCIPAL SIMÉTRICA (2 PANELES) -->
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-6" x-show="rows.length > 0">
+
+            <!-- ========================================== -->
+            <!-- PANEL IZQUIERDO: ZAINTZA OROKORRA          -->
+            <!-- ========================================== -->
+            <section :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'" class="p-6 rounded-2xl shadow-sm border flex flex-col justify-between transition-colors">
+                <div>
+                    <div class="flex justify-between items-center border-b pb-3 mb-6" :class="darkMode ? 'border-slate-700' : 'border-slate-100'">
+                        <h2 class="text-base font-bold tracking-wider">ZAINTZA OROKORRA</h2>
+                        <!-- Donut central principal -->
+                        <div class="w-24 h-24 relative flex items-center justify-center">
+                            <canvas id="chart_libro"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Métricas y barras simplificadas -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">IKASTURTEA BANAKETA</span>
+                            <span class="text-xl font-bold" x-text="uniqueCursos.length"></span>
+                            <div class="w-full bg-slate-700/20 h-2 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">MINTEGIAK</span>
+                            <span class="text-xl font-bold" x-text="uniqueMintegias.length"></span>
+                            <div class="w-full bg-slate-700/20 h-2 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-amber-500 h-full rounded-full" style="width: 50%"></div>
+                            </div>
+                        </div>
+
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent col-span-2">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">INFORMAZIO ITURRIAK (C)</span>
+                            <span class="text-xl font-bold" x-text="rows.length"></span>
+                            <div class="w-full bg-slate-700/20 h-2 rounded-full mt-2 overflow-hidden flex">
+                                <div class="bg-indigo-500 h-full" style="width: 40%"></div>
+                                <div class="bg-blue-500 h-full" style="width: 30%"></div>
+                                <div class="bg-emerald-500 h-full" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DE PANEL: LEGENDA IDÉNTICA -->
+                <div :class="darkMode ? 'bg-slate-900/80 border-slate-700' : 'bg-slate-50 border-slate-200'" class="p-4 rounded-xl border mt-auto">
+                    <h3 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">LEGENDA</h3>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Banitszio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> EOP</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Bantitszio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Informazio ...</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Informazio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> 2%</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- PANEL DERECHO: PROZESUEN ZAINTZA           -->
+            <!-- ========================================== -->
+            <section :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'" class="p-6 rounded-2xl shadow-sm border flex flex-col justify-between transition-colors">
+                <div>
+                    <div class="flex justify-between items-center border-b pb-3 mb-6" :class="darkMode ? 'border-slate-700' : 'border-slate-100'">
+                        <h2 class="text-base font-bold tracking-wider">PROZESUEN ZAINTZA</h2>
+                    </div>
+
+                    <!-- Métricas y subprocesos -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">ITURRI LIBURUAK</span>
+                            <span class="text-xl font-bold">4</span>
+                            <div class="w-full bg-slate-700/20 h-2 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">1. PERIODOKO EGOERA</span>
+                            <span class="text-xl font-bold" x-text="uniqueEgoera1.length"></span>
+                            <div class="w-full bg-slate-700/20 h-2 rounded-full mt-2 overflow-hidden">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+
+                        <div :class="darkMode ? 'bg-slate-900/50' : 'bg-slate-50'" class="p-4 rounded-xl border border-transparent col-span-2">
+                            <span class="text-xs font-semibold opacity-70 block mb-1">ESPARRUEN BANAKETA OROKORRA</span>
+                            <div class="w-full h-24 relative mt-2">
+                                <canvas id="chart_mintegia"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DE PANEL: LEGENDA IDÉNTICA -->
+                <div :class="darkMode ? 'bg-slate-900/80 border-slate-700' : 'bg-slate-50 border-slate-200'" class="p-4 rounded-xl border mt-auto">
+                    <h3 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">LEGENDA</h3>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Banitszio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block"></span> EOP</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Bantitszio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Informazio ...</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Informazio</div>
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> 2%</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- BARRA DE ESTADO Y TABLA -->
+        <div class="flex justify-between items-center px-2">
+            <span class="text-xs font-semibold opacity-70 uppercase tracking-wider" x-text="'Erakusten: ' + filteredRows.length + ' erregistro'"></span>
         </div>
 
-        <!-- BLOQUE DERECHA: PROZESUAK + PROZESUEN ZAINTZA -->
-        <div class="dashboard-block" id="blockProzesuenZaintza">
-            <div class="section-title">PROZESUEN ZAINTZA</div>
-            <div class="right-subgrid">
-                
-                <!-- Pila vertical de Procesos P01, P02, P03 -->
-                <div class="procesos-vertical-stack" id="procesosGrid">
-                    
-                    <!-- P01 -->
-                    <div class="proceso-column" data-name="p01 ikaskuntza">
-                        <div class="proceso-header">
-                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.6jdag7f2163u" target="_blank" title="Ireki dokumentua">
-                                P01<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">IKASKUNTZA ↗</span>
-                            </a>
-                        </div>
-                        <div class="proceso-body">
-                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                                <option value="">-- Hautatu Ámbitoa --</option>
-                                <option value="p01-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                                <option value="p01-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                                <option value="p01-ambito-03">03.-NAZIOARTEKOTZA</option>
-                                <option value="p01-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                                <option value="p01-ambito-05">05.-GIZA GARAPENA</option>
-                                <option value="p01-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- P02 -->
-                    <div class="proceso-column" data-name="p02 antolaketa baliabideak">
-                        <div class="proceso-header">
-                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.k98e7fstqw1f" target="_blank" title="Ireki dokumentua">
-                                P02<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">ANTOLAKETA eta BALIABIDEAK ↗</span>
-                            </a>
-                        </div>
-                        <div class="proceso-body">
-                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                                <option value="">-- Hautatu Ámbitoa --</option>
-                                <option value="p02-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                                <option value="p02-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                                <option value="p02-ambito-03">03.-NAZIOARTEKOTZA</option>
-                                <option value="p02-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                                <option value="p02-ambito-05">05.-GIZA GARAPENA</option>
-                                <option value="p02-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- P03 -->
-                    <div class="proceso-column" data-name="p03 erantzukizun soziala">
-                        <div class="proceso-header">
-                            <a href="https://docs.google.com/document/d/13LunNn9qMoIVCuyrx96eUUV8bpQOUreLfpgK6OfEODU/edit?tab=t.0#bookmark=id.n6wva84nyjaw" target="_blank" title="Ireki dokumentua">
-                                P03<br><span style="font-size: 0.75rem; font-weight: normal; opacity: 0.9;">ERANTZUKIZUN SOZIALA ↗</span>
-                            </a>
-                        </div>
-                        <div class="proceso-body">
-                            <select class="ambito-select" onchange="handleProcesoSelect(this)">
-                                <option value="">-- Hautatu Ámbitoa --</option>
-                                <option value="p03-ambito-01">01.-ERALDAKETA DIGITALA eta TEKNOLOGIKOA</option>
-                                <option value="p03-ambito-02">02.-BERRIKUNTZA eta EKINTZAILETZA</option>
-                                <option value="p03-ambito-03">03.-NAZIOARTEKOTZA</option>
-                                <option value="p03-ambito-04">04.-BIOTEKNOLOGIA, BIOSORKUNTZA eta ONGIZATEA</option>
-                                <option value="p03-ambito-05">05.-GIZA GARAPENA</option>
-                                <option value="p03-ambito-06">06.-ADIMENAREN KUDEAKETA</option>
-                            </select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Gráficos Prozesuen Zaintza (Vinculados a las 4 Vercel Sheets) -->
-                <div class="mini-charts-grid-prozesuen">
-                    <div class="metric-card">
-                        <div class="metric-title">Iturri Liburuak</div>
-                        <div class="donut-chart donut-multi-4"><span class="donut-number" id="ver-val-1">4</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Ikasturtea Banaketa</div>
-                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-2">1</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Mintegiak</div>
-                        <div class="donut-chart donut-multi-24"><span class="donut-number" id="ver-val-3">24</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">Informazio Iturriak (C)</div>
-                        <div class="donut-chart donut-multi-52"><span class="donut-number" id="ver-val-4">100</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">1. Periodoko Egoera</div>
-                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-5">1</span></div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-title">2. Periodoko Egoera</div>
-                        <div class="donut-chart donut-multi-1"><span class="donut-number" id="ver-val-6">2</span></div>
-                    </div>
-                </div>
-
+        <section :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100'" class="rounded-2xl shadow-sm border overflow-hidden transition-colors">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-400' : 'bg-slate-50 border-slate-100 text-slate-500'" class="border-b text-xs font-bold uppercase tracking-wider">
+                            <th class="p-4">NODOA</th>
+                            <th class="p-4">Ikasturtea</th>
+                            <th class="p-4">ESPARRUA</th>
+                            <th class="p-4">Iturria / Esteka (C-D)</th>
+                            <th class="p-4">1. Jarraipena (E)</th>
+                            <th class="p-4">Egoera 1 (H)</th>
+                            <th class="p-4">2. Jarraipena (I)</th>
+                            <th class="p-4">Egoera 2 (L)</th>
+                        </tr>
+                    </thead>
+                    <tbody :class="darkMode ? 'divide-slate-700' : 'divide-slate-100'" class="divide-y text-sm">
+                        <template x-for="row in filteredRows" :key="row.id">
+                            <tr :class="darkMode ? 'hover:bg-slate-700/50' : 'hover:bg-slate-50/50'" class="transition">
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-500" x-text="row.libro"></span>
+                                </td>
+                                <td class="p-4 font-medium" x-text="row.curso"></td>
+                                <td class="p-4 font-semibold text-slate-700 dark:text-slate-300" x-text="row.mintegia"></td>
+                                <td class="p-4">
+                                    <div class="text-xs text-indigo-400 font-medium" x-text="'Iturria: ' + row.iturria"></div>
+                                    <a :href="row.link" target="_blank" class="text-xs opacity-60 hover:underline truncate block max-w-xs mt-1" x-text="row.link"></a>
+                                </td>
+                                <td class="p-4 opacity-80" x-text="row.jarraipena1"></td>
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500" x-text="row.egoera1"></span>
+                                </td>
+                                <td class="p-4 opacity-80" x-text="row.jarraipena2"></td>
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-500" x-text="row.egoera2"></span>
+                                </td>
+                            </tr>
+                        </template>
+                        <template x-if="filteredRows.length === 0">
+                            <tr>
+                                <td colspan="8" class="p-12 text-center opacity-50">
+                                    <p class="font-medium">Datuak kargatzen...</p>
+                                    <p class="text-xs mt-1">Google Sheets ezberdinetatik konexioa ezartzen ari da.</p>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
             </div>
-        </div>
-
+        </section>
     </div>
-</div>
 
-<script>
-    // IDs de las Google Sheets extraídos de tus enlaces
-    const sheetNetlifyId = "1rRYgGe0lFuCVRwMNf_QvXTl9Pbqh3CD2xyYRtkEJJMU";
-    const sheetVercelIds = [
-        "1B3JBLWe9SlcF8cfGCVgkdIrPkZ5eYAXSF8EsBGmORS0",
-        "1s5ULqU3Tl9SSSmwiUmUpUzpGHi-hrqtCHjWy5Tpaa1U",
-        "1RDG3Qmx56p1IbqBAvUzgxn_tlTvsQaaU-K2tSRuu_74",
-        "1qBImmywijI9zPuT0n7MNndRItJbsTlslYehrQI7SmQk"
-    ];
+    <script>
+        function dashboardData() {
+            return {
+                rows: [],
+                darkMode: false,
+                selectedLibro: '',
+                selectedCurso: '',
+                selectedMintegia: '',
+                selectedEgoera1: '',
+                selectedEgoera2: '',
+                charts: {},
 
-    // Función auxiliar para leer una celda o valor CSV de una Google Sheet pública
-    async function fetchSheetData(sheetId, elementId) {
-        try {
-            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
-            const response = await fetch(url);
-            if (!response.ok) return;
-            const text = await response.text();
-            // Analizamos el CSV básico para buscar números o datos relevantes
-            const rows = text.split("\n").map(row => row.split(","));
-            if (rows.length > 0 && rows[0].length > 0) {
-                // Buscamos un valor numérico representativo en la primera fila/columna o mantenemos el valor por defecto
-                const val = rows[0][0].replace(/"/g, "").trim();
-                if (val && !isNaN(val)) {
-                    document.getElementById(elementId).textContent = val;
+                init() {
+                    this.loadAllGoogleSheets();
+                },
+
+                loadAllGoogleSheets() {
+                    const url1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSN5pK9Dn9esNdcnjuYeU7utXIzx1YLhcfQ96KZrO1IIGsa5r4xXtCwoOVsnaKU1rZZsdzheEIINBlj/pub?gid=1194051936&single=true&output=csv";
+                    const url2 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVcp911-20UPT0C_jlJB0TT2Y5l3rCwLlcfMRziXc0uR4s5uv3lt2u0y8V2L1SmiFY8vKJgWWmHaLl/pub?gid=1194051936&single=true&output=csv";
+                    const url3 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSONa6aFXJG3Zbo3gD5WIVq0escct1VtAp6pKvw4C13C2QC-zxlHE9Z6PCEcWCJCgXzw_UWdINfFdte/pub?gid=1194051936&single=true&output=csv";
+                    const url4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv";
+
+                    const sheetsConfig = [
+                        { name: '01.- ESTRATEGIA', url: url1 },
+                        { name: '02.- OPERATIBA', url: url2 },
+                        { name: '03.- SORTZAILEA', url: url3 },
+                        { name: '04.1.- ZERBITZUAK', url: url4 }
+                    ];
+
+                    let allParsedData = [];
+
+                    sheetsConfig.forEach((sheet, sheetIndex) => {
+                        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(sheet.url);
+
+                        Papa.parse(proxyUrl, {
+                            download: true,
+                            header: false,
+                            complete: (results) => {
+                                results.data.forEach((cols, index) => {
+                                    const cursoVal = cols[0] ? cols[0].trim() : '';
+                                    const mintegiaVal = cols[1] ? cols[1].trim() : '';
+                                    
+                                    const lowerCurso = cursoVal.toLowerCase();
+                                    const lowerMintegia = mintegiaVal.toLowerCase();
+
+                                    if (cols.length >= 12 && cursoVal !== '' && 
+                                        !lowerCurso.includes('ikasturtea') && 
+                                        !lowerCurso.includes('mikel') && 
+                                        !lowerCurso.includes('arduraduna') &&
+                                        !lowerMintegia.includes('arduraduna') &&
+                                        !lowerMintegia.includes('mikel')) {
+                                        
+                                        allParsedData.push({
+                                            id: `${sheetIndex}-${index}`,
+                                            libro: sheet.name,
+                                            curso: cursoVal,
+                                            mintegia: mintegiaVal,
+                                            iturria: cols[2] ? cols[2].trim() : 'Zehaztu gabe',
+                                            link: cols[3] ? cols[3].trim() : '',
+                                            jarraipena1: cols[4] ? cols[4].trim() : '',
+                                            desc1: cols[5] ? cols[5].trim() : '',
+                                            titulo1: cols[6] ? cols[6].trim() : '',
+                                            egoera1: cols[7] ? cols[7].trim() : '',
+                                            jarraipena2: cols[8] ? cols[8].trim() : '',
+                                            desc2: cols[9] ? cols[9].trim() : '',
+                                            titulo2: cols[10] ? cols[10].trim() : '',
+                                            egoera2: cols[11] ? cols[11].trim() : ''
+                                        });
+                                    }
+                                });
+
+                                this.rows = [...allParsedData];
+                                setTimeout(() => this.initCharts(), 150);
+                            },
+                            error: (err) => {
+                                console.error("Errorea fitxategia kargatzean: ", sheet.url, err);
+                            }
+                        });
+                    });
+                },
+
+                get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
+                get uniqueCursos() { return [...new Set(this.rows.map(r => r.curso))].filter(Boolean).sort(); },
+                
+                get uniqueMintegias() {
+                    let dataFiltered = this.rows;
+                    if (this.selectedLibro) {
+                        dataFiltered = dataFiltered.filter(r => r.libro === this.selectedLibro);
+                    }
+                    return [...new Set(dataFiltered.map(r => r.mintegia))].filter(Boolean).sort();
+                },
+
+                get uniqueEgoera1() { return [...new Set(this.rows.map(r => r.egoera1))].filter(Boolean).sort(); },
+                get uniqueEgoera2() { return [...new Set(this.rows.map(r => r.egoera2))].filter(Boolean).sort(); },
+
+                get filteredRows() {
+                    return this.rows.filter(row => {
+                        return (!this.selectedLibro || row.libro === this.selectedLibro) &&
+                               (!this.selectedCurso || row.curso === this.selectedCurso) &&
+                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia) &&
+                               (!this.selectedEgoera1 || row.egoera1 === this.selectedEgoera1) &&
+                               (!this.selectedEgoera2 || row.egoera2 === this.selectedEgoera2);
+                    });
+                },
+
+                initCharts() {
+                    const dataToUse = this.filteredRows;
+                    const keys = ['libro', 'mintegia'];
+
+                    const centerTextPlugin = {
+                        id: 'centerText',
+                        beforeDraw(chart) {
+                            const { width, height, ctx } = chart;
+                            ctx.restore();
+                            const fontSize = (height / 110).toFixed(2);
+                            ctx.font = `bold ${fontSize}em sans-serif`;
+                            ctx.textBaseline = 'middle';
+                            ctx.fillStyle = chart.options.plugins.centerText.color || '#334155';
+
+                            const text = chart.options.plugins.centerText.text || '';
+                            const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                            const textY = height / 2 - 4;
+
+                            ctx.fillText(text, textX, textY);
+                            ctx.save();
+                        }
+                    };
+
+                    keys.forEach(key => {
+                        const counts = {};
+                        dataToUse.forEach(r => {
+                            const val = (r[key] && r[key] !== '') ? r[key] : 'Zehaztu gabe';
+                            counts[val] = (counts[val] || 0) + 1;
+                        });
+
+                        const uniqueCount = Object.keys(counts).length;
+                        const canvasId = 'chart_' + key;
+                        const ctx = document.getElementById(canvasId);
+                        if (!ctx) return;
+
+                        if (this.charts[key]) {
+                            this.charts[key].destroy();
+                        }
+
+                        this.charts[key] = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(counts),
+                                datasets: [{
+                                    data: Object.values(counts),
+                                    backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f43f5e', '#a855f7'],
+                                    borderWidth: 2,
+                                    borderColor: this.darkMode ? '#1e293b' : '#ffffff'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutout: '70%',
+                                plugins: {
+                                    legend: { display: false },
+                                    centerText: {
+                                        text: dataToUse.length.toString(),
+                                        color: this.darkMode ? '#f8fafc' : '#1e293b'
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                const label = context.label || '';
+                                                const value = context.parsed || 0;
+                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                                const percentage = ((value / total) * 100).toFixed(1) + '%';
+                                                return ` ${label}: ${value} erregistro (${percentage})`;
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: [centerTextPlugin]
+                        });
+                    });
+                },
+
+                updateCharts() {
+                    this.initCharts();
                 }
             }
-        } catch (e) {
-            console.log("Nota: Usando valor por defecto para la hoja conectada.");
         }
-    }
-
-    // Cargar preferencia de tema y sincronizar datos al iniciar
-    document.addEventListener("DOMContentLoaded", () => {
-        const savedTheme = localStorage.getItem("theme") || "dark";
-        document.body.setAttribute("data-theme", savedTheme);
-        updateButtonText(savedTheme);
-
-        // Intentar sincronizar datos en segundo plano desde las hojas oficiales
-        // (Si la hoja es pública, actualizará los valores automáticamente)
-        fetchSheetData(sheetNetlifyId, "net-val-2"); // Sincroniza Mintegiak de Netlify por ejemplo
-    });
-
-    function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute("data-theme");
-        const newTheme = currentTheme === "light" ? "dark" : "light";
-        
-        body.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        updateButtonText(newTheme);
-    }
-
-    function updateButtonText(theme) {
-        const btn = document.getElementById("themeBtn");
-        if (theme === "dark") {
-            btn.textContent = "Modu Argia ☀️";
-        } else {
-            btn.textContent = "Modu Iluna 🌙";
-        }
-    }
-
-    function handleProcesoSelect(selectElement) {
-        const selectedValue = selectElement.value;
-        if (selectedValue) {
-            console.log("Aukeratuta:", selectedValue);
-        }
-    }
-
-    // Buscador Global en tiempo real
-    function filterContent() {
-        const query = document.getElementById("globalSearch").value.toLowerCase();
-        
-        // Filtrar nodos
-        const nodoCards = document.querySelectorAll("#nodosGrid .nodo-card");
-        nodoCards.forEach(card => {
-            const name = card.getAttribute("data-name");
-            if (name.includes(query)) {
-                card.classList.remove("hidden");
-            } else {
-                card.classList.add("hidden");
-            }
-        });
-
-        // Filtrar procesos
-        const procesoCols = document.querySelectorAll("#procesosGrid .proceso-column");
-        procesoCols.forEach(col => {
-            const name = col.getAttribute("data-name");
-            if (name.includes(query)) {
-                col.classList.remove("hidden");
-            } else {
-                col.classList.add("hidden");
-            }
-        });
-    }
-</script>
-
+    </script>
 </body>
 </html>
