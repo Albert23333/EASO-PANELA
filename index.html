@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaintza Ekosistema - Dashboard Bateratua</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Tailwind CSS (CDN estable) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- AlpineJS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- PapaParse para CSV -->
@@ -38,14 +38,14 @@
             </div>
             <div class="flex gap-3">
                 <!-- NODO GLOBALA -->
-                <select x-model="selectedLibro" @change="selectedMintegia = ''" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
+                <select x-model="selectedLibro" @change="selectedMintegia = ''" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none cursor-pointer">
                     <option value="">Nodo Globala (Denak)</option>
                     <template x-for="libro in uniqueLibros" :key="libro">
                         <option :value="libro" x-text="libro"></option>
                     </template>
                 </select>
                 <!-- PROZESU MOTA -->
-                <select x-model="selectedCurso" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
+                <select x-model="selectedCurso" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none cursor-pointer">
                     <option value="">Prozesu Mota (Denak)</option>
                     <template x-for="curso in uniqueCursos" :key="curso">
                         <option :value="curso" x-text="curso"></option>
@@ -127,7 +127,7 @@
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                 <span class="text-xs font-semibold text-slate-300">ZERBITZUAK NODOA</span>
                             </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none">
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Zerbitzua --</option>
                                 <template x-for="mintegia in uniqueMintegias" :key="mintegia">
                                     <option :value="mintegia" x-text="mintegia"></option>
@@ -141,7 +141,7 @@
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                 <span class="text-xs font-semibold text-slate-300">KUDEAKETA SISTEMA</span>
                             </div>
-                            <select x-model="selectedEgoera1" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none w-full">
+                            <select x-model="selectedEgoera1" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none w-full cursor-pointer">
                                 <option value="">-- Hautatu Kudeaketa --</option>
                                 <template x-for="eg in uniqueEgoera1" :key="eg">
                                     <option :value="eg" x-text="eg"></option>
@@ -192,7 +192,7 @@
                                 <span class="text-xs font-bold text-white">P01</span>
                                 <span class="text-[10px] text-slate-400">IKASKUNTZA ↗</span>
                             </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
                                 <template x-for="m in uniqueMintegias" :key="m">
                                     <option :value="m" x-text="m"></option>
@@ -234,7 +234,7 @@
                                 <span class="text-xs font-bold text-white">P02</span>
                                 <span class="text-[10px] text-slate-400">ANTOLAKETA eta BALIABIDEAK ↗</span>
                             </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
                                 <template x-for="m in uniqueMintegias" :key="m">
                                     <option :value="m" x-text="m"></option>
@@ -274,7 +274,7 @@
                                 <span class="text-xs font-bold text-white">P03</span>
                                 <span class="text-[10px] text-slate-400">ERANTZUKIZUN SOZIALA ↗</span>
                             </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
                                 <template x-for="m in uniqueMintegias" :key="m">
                                     <option :value="m" x-text="m"></option>
