@@ -1,309 +1,487 @@
 <!DOCTYPE html>
 <html lang="eu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zaintza Ekosistema</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaintza Ekosistema - Dashboard Bateratua</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- AlpineJS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- PapaParse para CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-6">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-6" x-data="dashboardData()" x-init="init()">
 
-  <div class="max-w-7xl mx-auto space-y-6">
-    
-    <!-- CABECERA PRINCIPAL -->
-    <header class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
-        <p class="text-sm text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
-      </div>
-      <button id="theme-toggle" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 transition">Modu Argia ☀️</button>
-    </header>
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- CABECERA -->
+        <header class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
+                <p class="text-sm text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <button @click="darkMode = !darkMode" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 transition cursor-pointer">
+                    <span x-show="!darkMode">🌙 Modu Iluna</span>
+                    <span x-show="darkMode">☀ Modu Argia</span>
+                </button>
+            </div>
+        </header>
 
-    <!-- BARRA DE HERRAMIENTAS Y FILTROS UNIFICADA -->
-    <div class="flex flex-col md:flex-row gap-4">
-      <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
-        <span class="text-slate-400">🔍</span>
-        <input type="text" placeholder="Bilatu nodoak, prozesuak edo eremuak..." id="global-search" class="bg-transparent border-none text-slate-100 w-full focus:outline-none text-sm">
-      </div>
-      <div class="flex gap-3">
-        <select id="filter-nodo" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
-          <option value="">Nodo Globala</option>
-        </select>
-        <select id="filter-prozesu" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
-          <option value="">Prozesu Mota</option>
-        </select>
-      </div>
+        <!-- BARRA DE BÚSQUEDA Y FILTROS SUPERIORES -->
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
+                <span class="text-slate-400">🔍</span>
+                <input type="text" x-model="searchQuery" placeholder="Bilatu nodoak, prozesuak edo eremuak..." class="bg-transparent border-none text-slate-100 w-full focus:outline-none text-sm">
+            </div>
+            <div class="flex gap-3">
+                <!-- NODO GLOBALA (Select dinámico) -->
+                <select x-model="selectedLibro" @change="selectedMintegia = ''" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
+                    <option value="">Nodo Globala (Denak)</option>
+                    <template x-for="libro in uniqueLibros" :key="libro">
+                        <option :value="libro" x-text="libro"></option>
+                    </template>
+                </select>
+                <!-- PROZESU MOTA (Select dinámico) -->
+                <select x-model="selectedCurso" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none">
+                    <option value="">Prozesu Mota (Denak)</option>
+                    <template x-for="curso in uniqueCursos" :key="curso">
+                        <option :value="curso" x-text="curso"></option>
+                    </template>
+                </select>
+            </div>
+        </div>
+
+        <!-- CUERPO PRINCIPAL DEL DASHBOARD (2 PANELES SIMÉTRICOS) -->
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-6" x-show="rows.length > 0">
+
+            <!-- ========================================== -->
+            <!-- PANEL IZQUIERDO: ZAINTZA OROKORRA          -->
+            <!-- ========================================== -->
+            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                        <h2 class="text-base font-bold tracking-wider text-slate-200">ZAINTZA OROKORRA</h2>
+                        <div class="w-14 h-14 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
+                            <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="filteredRows.length">52</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
+                                <span class="text-lg font-bold text-white" x-text="uniqueCursos.length">1</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 25%;"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 text-right">25%</span>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-semibold text-slate-400">MINTEGIAK</span>
+                                <span class="text-lg font-bold text-white" x-text="uniqueMintegias.length">17</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-gradient-to-r from-emerald-500 via-amber-500 to-purple-500 h-full rounded-full" style="width: 25%;"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 text-right">25%</span>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
+                                <span class="text-lg font-bold text-white" x-text="filteredRows.length">52</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
+                                <div class="bg-gradient-to-r from-orange-500 via-emerald-500 to-purple-500 h-full rounded-full" style="width: 100%;"></div>
+                            </div>
+                            <div class="text-[11px] text-slate-400 flex items-center gap-3">
+                                <span>Source:</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-orange-500 inline-block"></span> Banitszio</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> EOP</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio...</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-semibold text-slate-400">1. PERIODOKO EGOERA (H)</span>
+                                <span class="text-lg font-bold text-white" x-text="uniqueEgoera1.length">3</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-emerald-400 h-full rounded-full" style="width: 15%;"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 text-right">Status</span>
+                        </div>
+
+                        <!-- ZERBITZUAK NODOA (Select dinámico conectado a Esparrua/Mintegia) -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <span class="text-xs font-semibold text-slate-300">ZERBITZUAK NODOA</span>
+                            </div>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none">
+                                <option value="">-- Hautatu Zerbitzua --</option>
+                                <template x-for="mintegia in uniqueMintegias" :key="mintegia">
+                                    <option :value="mintegia" x-text="mintegia"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                        <!-- KUDEAKETA SISTEMA (Select dinámico conectado a Egoera1) -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <span class="text-xs font-semibold text-slate-300">KUDEAKETA SISTEMA</span>
+                            </div>
+                            <select x-model="selectedEgoera1" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none w-full">
+                                <option value="">-- Hautatu Kudeaketa --</option>
+                                <template x-for="eg in uniqueEgoera1" :key="eg">
+                                    <option :value="eg" x-text="eg"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PIE DE PANEL: LEGENDA UNIFICADA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
+                            [ Heatmap / Minichart ]
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ========================================== -->
+            <!-- PANEL DERECHO: PROZESUEN ZAINTZA          -->
+            <!-- ========================================== -->
+            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                        <h2 class="text-base font-bold tracking-wider text-slate-200">PROZESUEN ZAINTZA</h2>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+
+                        <!-- BLOQUE P01 (Estrategia) -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-white">P01</span>
+                                <span class="text-[10px] text-slate-400">IKASKUNTZA ↗</span>
+                            </div>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                                <option value="">-- Hautatu Ambitoa --</option>
+                                <template x-for="m in uniqueMintegias" :key="m">
+                                    <option :value="m" x-text="m"></option>
+                                </template>
+                            </select>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-cyan-500 h-full rounded-full" style="width: 35%;"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400">12%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">ITURRI LIBURUAK</span>
+                                <span class="text-sm font-bold text-white" x-text="uniqueLibros.length">4</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 10%;"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 text-right">4%</span>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
+                                <span class="text-sm font-bold text-white" x-text="uniqueCursos.length">1</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-amber-500 h-full rounded-full" style="width: 5%;"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 text-right">0%</span>
+                        </div>
+
+                        <!-- BLOQUE P02 (Operativa) -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-white">P02</span>
+                                <span class="text-[10px] text-slate-400">ANTOLAKETA eta BALIABIDEAK ↗</span>
+                            </div>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                                <option value="">-- Hautatu Ambitoa --</option>
+                                <template x-for="m in uniqueMintegias" :key="m">
+                                    <option :value="m" x-text="m"></option>
+                                </template>
+                            </select>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-purple-500 h-full rounded-full" style="width: 48%;"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400">24%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">MINTEGIAK</span>
+                                <span class="text-sm font-bold text-white" x-text="uniqueMintegias.length">24</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full rounded-full" style="width: 60%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
+                                <span class="text-sm font-bold text-white" x-text="rows.length">100</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- BLOQUE P03 (Sortzailea) -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-white">P03</span>
+                                <span class="text-[10px] text-slate-400">ERANTZUKIZUN SOZIALA ↗</span>
+                            </div>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
+                                <option value="">-- Hautatu Ambitoa --</option>
+                                <template x-for="m in uniqueMintegias" :key="m">
+                                    <option :value="m" x-text="m"></option>
+                                </template>
+                            </select>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-amber-500 via-teal-500 to-purple-500 h-full rounded-full" style="width: 30%;"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400">18%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">1. PERIODOKO EGOERA</span>
+                                <span class="text-sm font-bold text-white" x-text="uniqueEgoera1.length">1</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-400 h-full rounded-full" style="width: 20%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between col-span-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">2. PERIODOKO EGOERA</span>
+                                <span class="text-sm font-bold text-white" x-text="uniqueEgoera2.length">2</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div class="bg-slate-500 h-full rounded-full" style="width: 25%;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PIE DE PANEL: LEGENDA UNIFICADA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
+                            [ Heatmap / Minichart ]
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- TABLA INFERIOR DE DATOS DETALLADOS -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm" x-show="rows.length > 0">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider" x-text="'Erakusten: ' + filteredRows.length + ' erregistro'"></span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-950/50 border-b border-slate-800 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <th class="p-4">NODOA</th>
+                            <th class="p-4">Ikasturtea</th>
+                            <th class="p-4">ESPARRUA</th>
+                            <th class="p-4">Iturria / Esteka</th>
+                            <th class="p-4">1. Egoera (H)</th>
+                            <th class="p-4">2. Egoera (L)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-sm">
+                        <template x-for="row in filteredRows" :key="row.id">
+                            <tr class="hover:bg-slate-800/40 transition">
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400" x-text="row.libro"></span>
+                                </td>
+                                <td class="p-4 font-medium" x-text="row.curso"></td>
+                                <td class="p-4 font-semibold text-slate-300" x-text="row.mintegia"></td>
+                                <td class="p-4">
+                                    <div class="text-xs text-indigo-400 font-medium" x-text="'Iturria: ' + row.iturria"></div>
+                                    <a :href="row.link" target="_blank" class="text-xs text-slate-400 hover:underline truncate block max-w-xs mt-1" x-text="row.link"></a>
+                                </td>
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400" x-text="row.egoera1"></span>
+                                </td>
+                                <td class="p-4">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400" x-text="row.egoera2"></span>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
     </div>
 
-    <!-- CUERPO PRINCIPAL DEL DASHBOARD (2 PANELES SIMÉTRICOS) -->
-    <main class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- LÓGICA ALPINEJS Y PAPAPARSE -->
+    <script>
+        function dashboardData() {
+            return {
+                rows: [],
+                darkMode: false,
+                searchQuery: '',
+                selectedLibro: '',
+                selectedCurso: '',
+                selectedMintegia: '',
+                selectedEgoera1: '',
 
-      <!-- ========================================== -->
-      <!-- PANEL IZQUIERDO: ZAINTZA OROKORRA          -->
-      <!-- ========================================== -->
-      <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-        <div>
-          <!-- Cabecera del panel izquierdo con el Donut a la derecha -->
-          <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-            <h2 class="text-base font-bold tracking-wider text-slate-200">ZAINTZA OROKORRA</h2>
-            <div class="w-14 h-14 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
-              <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white">52</div>
-            </div>
-          </div>
+                init() {
+                    this.loadAllGoogleSheets();
+                },
 
-          <!-- MÉTRICAS / DATOS EN BARRAS Y TARJETAS SIMPLES -->
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
-                <span class="text-lg font-bold text-white">1</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                <div class="bg-emerald-500 h-full rounded-full" style="width: 25%;"></div>
-              </div>
-              <span class="text-[10px] text-slate-400 text-right">25%</span>
-            </div>
+                loadAllGoogleSheets() {
+                    const url1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSN5pK9Dn9esNdcnjuYeU7utXIzx1YLhcfQ96KZrO1IIGsa5r4xXtCwoOVsnaKU1rZZsdzheEIINBlj/pub?gid=1194051936&single=true&output=csv";
+                    const url2 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVcp911-20UPT0C_jlJB0TT2Y5l3rCwLlcfMRziXc0uR4s5uv3lt2u0y8V2L1SmiFY8vKJgWWmHaLl/pub?gid=1194051936&single=true&output=csv";
+                    const url3 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSONa6aFXJG3Zbo3gD5WIVq0escct1VtAp6pKvw4C13C2QC-zxlHE9Z6PCEcWCJCgXzw_UWdINfFdte/pub?gid=1194051936&single=true&output=csv";
+                    const url4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv";
 
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-semibold text-slate-400">MINTEGIAK</span>
-                <span class="text-lg font-bold text-white">17</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                <div class="bg-gradient-to-r from-emerald-500 via-amber-500 to-purple-500 h-full rounded-full" style="width: 25%;"></div>
-              </div>
-              <span class="text-[10px] text-slate-400 text-right">25%</span>
-            </div>
+                    const sheetsConfig = [
+                        { name: '01.- ESTRATEGIA', url: url1 },
+                        { name: '02.- OPERATIBA', url: url2 },
+                        { name: '03.- SORTZAILEA', url: url3 },
+                        { name: '04.1.- ZERBITZUAK', url: url4 }
+                    ];
 
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                <span class="text-lg font-bold text-white">52</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
-                <div class="bg-gradient-to-r from-orange-500 via-emerald-500 to-purple-500 h-full rounded-full" style="width: 100%;"></div>
-              </div>
-              <div class="text-[11px] text-slate-400 flex items-center gap-3">
-                <span>Source:</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-orange-500 inline-block"></span> Banitszio</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> EOP</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio...</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</span>
-              </div>
-            </div>
+                    let allParsedData = [];
 
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-semibold text-slate-400">1. PERIODOKO EGOERA (H)</span>
-                <span class="text-lg font-bold text-white">3</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                <div class="bg-emerald-400 h-full rounded-full" style="width: 15%;"></div>
-              </div>
-              <span class="text-[10px] text-slate-400 text-right">Status</span>
-            </div>
+                    sheetsConfig.forEach((sheet, sheetIndex) => {
+                        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(sheet.url);
 
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="text-xs font-semibold text-slate-300">ZERBITZUAK NODOA</span>
-              </div>
-              <select id="zerbitzu-select" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none">
-                <option value="">-- Hautatu Zerbitzua --</option>
-              </select>
-            </div>
+                        Papa.parse(proxyUrl, {
+                            download: true,
+                            header: false,
+                            complete: (results) => {
+                                results.data.forEach((cols, index) => {
+                                    const cursoVal = cols[0] ? cols[0].trim() : '';
+                                    const mintegiaVal = cols[1] ? cols[1].trim() : '';
+                                    
+                                    const lowerCurso = cursoVal.toLowerCase();
+                                    const lowerMintegia = mintegiaVal.toLowerCase();
 
-            <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="text-xs font-semibold text-slate-300">KUDEAKETA SISTEMA</span>
-              </div>
-              <select id="kudeaketa-select" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none w-full">
-                <option value="">-- Hautatu Kudeaketa --</option>
-              </select>
-            </div>
+                                    if (cols.length >= 12 && cursoVal !== '' && 
+                                        !lowerCurso.includes('ikasturtea') && 
+                                        !lowerCurso.includes('mikel') && 
+                                        !lowerCurso.includes('arduraduna') &&
+                                        !lowerMintegia.includes('arduraduna') &&
+                                        !lowerMintegia.includes('mikel')) {
+                                        
+                                        allParsedData.push({
+                                            id: `${sheetIndex}-${index}`,
+                                            libro: sheet.name,
+                                            curso: cursoVal,
+                                            mintegia: mintegiaVal,
+                                            iturria: cols[2] ? cols[2].trim() : 'Zehaztu gabe',
+                                            link: cols[3] ? cols[3].trim() : '',
+                                            egoera1: cols[7] ? cols[7].trim() : '',
+                                            egoera2: cols[11] ? cols[11].trim() : ''
+                                        });
+                                    }
+                                });
 
-          </div>
-        </div>
+                                this.rows = [...allParsedData];
+                            },
+                            error: (err) => {
+                                console.error("Errorea fitxategia kargatzean: ", sheet.url, err);
+                            }
+                        });
+                    });
+                },
 
-        <!-- PIE DE PANEL: LEYENDA UNIFICADA Y MINICHART -->
-        <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
-          <div>
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
-            </div>
-          </div>
-          <div class="flex flex-col justify-end">
-            <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
-              [ Heatmap / Minichart ]
-            </div>
-          </div>
-        </div>
+                get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
+                get uniqueCursos() { return [...new Set(this.rows.map(r => r.curso))].filter(Boolean).sort(); },
+                
+                get uniqueMintegias() {
+                    let dataFiltered = this.rows;
+                    if (this.selectedLibro) {
+                        dataFiltered = dataFiltered.filter(r => r.libro === this.selectedLibro);
+                    }
+                    return [...new Set(dataFiltered.map(r => r.mintegia))].filter(Boolean).sort();
+                },
 
-      </section>
+                get uniqueEgoera1() { return [...new Set(this.rows.map(r => r.egoera1))].filter(Boolean).sort(); },
+                get uniqueEgoera2() { return [...new Set(this.rows.map(r => r.egoera2))].filter(Boolean).sort(); },
 
-      <!-- ========================================== -->
-      <!-- PANEL DERECHO: PROZESUEN ZAINTZA          -->
-      <!-- ========================================== -->
-      <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-        <div>
-          <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-            <h2 class="text-base font-bold tracking-wider text-slate-200">PROZESUEN ZAINTZA</h2>
-          </div>
+                get filteredRows() {
+                    return this.rows.filter(row => {
+                        const matchesSearch = !this.searchQuery || 
+                            Object.values(row).some(val => String(val).toLowerCase().includes(this.searchQuery.toLowerCase()));
 
-          <div class="grid grid-cols-2 gap-4 mb-6">
-
-            <!-- BLOQUE P01 -->
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-white">P01</span>
-                <span class="text-[10px] text-slate-400">IKASKUNTZA ↗</span>
-              </div>
-              <select class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
-                <option value="">-- Hautatu Ambitoa --</option>
-              </select>
-              <div class="flex items-center gap-2">
-                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-cyan-500 h-full rounded-full" style="width: 35%;"></div>
-                </div>
-                <span class="text-[10px] text-slate-400">12%</span>
-              </div>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">ITURRI LIBURUAK</span>
-                <span class="text-sm font-bold text-white">4</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                <div class="bg-emerald-500 h-full rounded-full" style="width: 10%;"></div>
-              </div>
-              <span class="text-[10px] text-slate-400 text-right">4%</span>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
-                <span class="text-sm font-bold text-white">1</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                <div class="bg-amber-500 h-full rounded-full" style="width: 5%;"></div>
-              </div>
-              <span class="text-[10px] text-slate-400 text-right">0%</span>
-            </div>
-
-            <!-- BLOQUE P02 -->
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-white">P02</span>
-                <span class="text-[10px] text-slate-400">ANTOLAKETA eta BALIABIDEAK ↗</span>
-              </div>
-              <select class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
-                <option value="">-- Hautatu Ambitoa --</option>
-              </select>
-              <div class="flex items-center gap-2">
-                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-emerald-500 to-purple-500 h-full rounded-full" style="width: 48%;"></div>
-                </div>
-                <span class="text-[10px] text-slate-400">24%</span>
-              </div>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">MINTEGIAK</span>
-                <span class="text-sm font-bold text-white">24</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div class="bg-emerald-500 h-full rounded-full" style="width: 60%;"></div>
-              </div>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                <span class="text-sm font-bold text-white">100</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
-              </div>
-            </div>
-
-            <!-- BLOQUE P03 -->
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
-              <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-white">P03</span>
-                <span class="text-[10px] text-slate-400">ERANTZUKIZUN SOZIALA ↗</span>
-              </div>
-              <select class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none">
-                <option value="">-- Hautatu Ambitoa --</option>
-              </select>
-              <div class="flex items-center gap-2">
-                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-amber-500 via-teal-500 to-purple-500 h-full rounded-full" style="width: 30%;"></div>
-                </div>
-                <span class="text-[10px] text-slate-400">18%</span>
-              </div>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">1. PERIODOKO EGOERA</span>
-                <span class="text-sm font-bold text-white">1</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div class="bg-emerald-400 h-full rounded-full" style="width: 20%;"></div>
-              </div>
-            </div>
-
-            <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between col-span-2">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[11px] font-semibold text-slate-400">2. PERIODOKO EGOERA</span>
-                <span class="text-sm font-bold text-white">2</span>
-              </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div class="bg-slate-500 h-full rounded-full" style="width: 25%;"></div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- PIE DE PANEL: LEYENDA UNIFICADA Y MINICHART -->
-        <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
-          <div>
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
-            </div>
-          </div>
-          <div class="flex flex-col justify-end">
-            <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
-              [ Heatmap / Minichart ]
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-    </main>
-
-  </div>
-
+                        return matchesSearch &&
+                               (!this.selectedLibro || row.libro === this.selectedLibro) &&
+                               (!this.selectedCurso || row.curso === this.selectedCurso) &&
+                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia) &&
+                               (!this.selectedEgoera1 || row.egoera1 === this.selectedEgoera1);
+                    });
+                }
+            }
+        }
+    </script>
 </body>
 </html>
