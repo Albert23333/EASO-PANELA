@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaintza Ekosistema - Dashboard Bateratua</title>
-    <!-- Tailwind CSS (CDN Estable) -->
+    <title>Zaintza Ekosistema - Dashboard Nagusia</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- AlpineJS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -27,7 +27,7 @@
             </button>
         </header>
 
-        <!-- BARRA DE HERRAMIENTAS Y FILTROS SUPERIORES -->
+        <!-- BARRA DE HERRAMIENTAS Y FILTROS UNIFICADA -->
         <div class="flex flex-col md:flex-row gap-4">
             <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
                 <span class="text-slate-400">🔍</span>
@@ -61,13 +61,12 @@
                 <div>
                     <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
                         <h2 class="text-base font-bold tracking-wider text-slate-200">ZAINTZA OROKORRA</h2>
-                        <!-- Ancla visual compacta con recuento dinámico -->
+                        <!-- Donut animado / Contador -->
                         <div class="w-14 h-14 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
                             <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="filteredRows.length">0</div>
                         </div>
                     </div>
 
-                    <!-- MÉTRICAS / DATOS EN BARRAS Y TARJETAS SIMPLES -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
@@ -120,7 +119,7 @@
                             <span class="text-[10px] text-slate-400 text-right">Status</span>
                         </div>
 
-                        <!-- ZERBITZUAK NODOA (Desplegable dinámico) -->
+                        <!-- ZERBITZUAK NODOA -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -134,7 +133,7 @@
                             </select>
                         </div>
 
-                        <!-- KUDEAKETA SISTEMA (Desplegable dinámico) -->
+                        <!-- KUDEAKETA SISTEMA -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -151,7 +150,7 @@
                     </div>
                 </div>
 
-                <!-- PIE DE PANEL: LEGENDA UNIFICADA -->
+                <!-- LEYENDA Y MINICHART (PANEL IZQUIERDO) -->
                 <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
                     <div>
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
@@ -310,7 +309,7 @@
                     </div>
                 </div>
 
-                <!-- PIE DE PANEL: LEGENDA UNIFICADA -->
+                <!-- LEYENDA Y MINICHART (PANEL DERECHO) -->
                 <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
                     <div>
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
@@ -379,7 +378,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS Y PAPAPARSE -->
+    <!-- LÓGICA ALPINEJS Y DESCARGA DIRECTA (FETCH SIN PROXY) -->
     <script>
         function dashboardData() {
             return {
@@ -395,62 +394,64 @@
                     this.loadAllGoogleSheets();
                 },
 
-                loadAllGoogleSheets() {
-                    const url1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSN5pK9Dn9esNdcnjuYeU7utXIzx1YLhcfQ96KZrO1IIGsa5r4xXtCwoOVsnaKU1rZZsdzheEIINBlj/pub?gid=1194051936&single=true&output=csv";
-                    const url2 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVcp911-20UPT0C_jlJB0TT2Y5l3rCwLlcfMRziXc0uR4s5uv3lt2u0y8V2L1SmiFY8vKJgWWmHaLl/pub?gid=1194051936&single=true&output=csv";
-                    const url3 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSONa6aFXJG3Zbo3gD5WIVq0escct1VtAp6pKvw4C13C2QC-zxlHE9Z6PCEcWCJCgXzw_UWdINfFdte/pub?gid=1194051936&single=true&output=csv";
-                    const url4 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv";
-
+                async loadAllGoogleSheets() {
                     const sheetsConfig = [
-                        { name: '01.- ESTRATEGIA', url: url1 },
-                        { name: '02.- OPERATIBA', url: url2 },
-                        { name: '03.- SORTZAILEA', url: url3 },
-                        { name: '04.1.- ZERBITZUAK', url: url4 }
+                        { name: '01.- ESTRATEGIA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSN5pK9Dn9esNdcnjuYeU7utXIzx1YLhcfQ96KZrO1IIGsa5r4xXtCwoOVsnaKU1rZZsdzheEIINBlj/pub?gid=1194051936&single=true&output=csv" },
+                        { name: '02.- OPERATIBA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVcp911-20UPT0C_jlJB0TT2Y5l3rCwLlcfMRziXc0uR4s5uv3lt2u0y8V2L1SmiFY8vKJgWWmHaLl/pub?gid=1194051936&single=true&output=csv" },
+                        { name: '03.- SORTZAILEA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSONa6aFXJG3Zbo3gD5WIVq0escct1VtAp6pKvw4C13C2QC-zxlHE9Z6PCEcWCJCgXzw_UWdINfFdte/pub?gid=1194051936&single=true&output=csv" },
+                        { name: '04.1.- ZERBITZUAK', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv" }
                     ];
 
                     let allParsedData = [];
 
-                    sheetsConfig.forEach((sheet, sheetIndex) => {
-                        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(sheet.url);
+                    for (let sheetIndex = 0; sheetIndex < sheetsConfig.length; sheetIndex++) {
+                        const sheet = sheetsConfig[sheetIndex];
+                        try {
+                            // Descarga directa limpia de Google Sheets sin pasar por proxys
+                            const response = await fetch(sheet.url);
+                            const csvText = await response.text();
 
-                        Papa.parse(proxyUrl, {
-                            download: true,
-                            header: false,
-                            complete: (results) => {
-                                results.data.forEach((cols, index) => {
-                                    const cursoVal = cols[0] ? cols[0].trim() : '';
-                                    const mintegiaVal = cols[1] ? cols[1].trim() : '';
-                                    
-                                    const lowerCurso = cursoVal.toLowerCase();
-                                    const lowerMintegia = mintegiaVal.toLowerCase();
+                            Papa.parse(csvText, {
+                                header: false,
+                                complete: (results) => {
+                                    if (results && results.data) {
+                                        results.data.forEach((cols, index) => {
+                                            if (!cols || cols.length === 0) return;
 
-                                    if (cols.length >= 12 && cursoVal !== '' && 
-                                        !lowerCurso.includes('ikasturtea') && 
-                                        !lowerCurso.includes('mikel') && 
-                                        !lowerCurso.includes('arduraduna') &&
-                                        !lowerMintegia.includes('arduraduna') &&
-                                        !lowerMintegia.includes('mikel')) {
-                                        
-                                        allParsedData.push({
-                                            id: `${sheetIndex}-${index}`,
-                                            libro: sheet.name,
-                                            curso: cursoVal,
-                                            mintegia: mintegiaVal,
-                                            iturria: cols[2] ? cols[2].trim() : 'Zehaztu gabe',
-                                            link: cols[3] ? cols[3].trim() : '',
-                                            egoera1: cols[7] ? cols[7].trim() : '',
-                                            egoera2: cols[11] ? cols[11].trim() : ''
+                                            const cursoVal = cols[0] ? String(cols[0]).trim() : '';
+                                            const mintegiaVal = cols[1] ? String(cols[1]).trim() : '';
+                                            
+                                            const lowerCurso = cursoVal.toLowerCase();
+                                            const lowerMintegia = mintegiaVal.toLowerCase();
+
+                                            if (cursoVal !== '' && 
+                                                !lowerCurso.includes('ikasturtea') && 
+                                                !lowerCurso.includes('mikel') && 
+                                                !lowerCurso.includes('arduraduna') &&
+                                                !lowerMintegia.includes('arduraduna') &&
+                                                !lowerMintegia.includes('mikel')) {
+                                                
+                                                allParsedData.push({
+                                                    id: `${sheetIndex}-${index}`,
+                                                    libro: sheet.name,
+                                                    curso: cursoVal,
+                                                    mintegia: mintegiaVal,
+                                                    iturria: cols[2] ? String(cols[2]).trim() : 'Zehaztu gabe',
+                                                    link: cols[3] ? String(cols[3]).trim() : '',
+                                                    egoera1: cols[7] ? String(cols[7]).trim() : 'Zehaztu gabe',
+                                                    egoera2: cols[11] ? String(cols[11]).trim() : 'Zehaztu gabe'
+                                                });
+                                            }
                                         });
                                     }
-                                });
+                                }
+                            });
+                        } catch (err) {
+                            console.error("Errorea fitxategia kargatzean: ", sheet.name, err);
+                        }
+                    }
 
-                                this.rows = [...allParsedData];
-                            },
-                            error: (err) => {
-                                console.error("Errorea fitxategia kargatzean: ", sheet.url, err);
-                            }
-                        });
-                    });
+                    this.rows = allParsedData;
                 },
 
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
