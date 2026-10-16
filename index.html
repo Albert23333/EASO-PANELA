@@ -378,7 +378,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS Y DESCARGA DIRECTA (FETCH SIN PROXY) -->
+    <!-- LÓGICA ALPINEJS Y DESCARGA DIRECTA -->
     <script>
         function dashboardData() {
             return {
@@ -407,7 +407,6 @@
                     for (let sheetIndex = 0; sheetIndex < sheetsConfig.length; sheetIndex++) {
                         const sheet = sheetsConfig[sheetIndex];
                         try {
-                            // Descarga directa limpia de Google Sheets sin pasar por proxys
                             const response = await fetch(sheet.url);
                             const csvText = await response.text();
 
