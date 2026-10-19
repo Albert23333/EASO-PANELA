@@ -13,7 +13,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-6" x-data="dashboardData()" x-init="init()">
 
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="max-w-[1600px] mx-auto space-y-6">
         
         <!-- CABECERA PRINCIPAL -->
         <header class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -51,80 +51,57 @@
             </div>
         </div>
 
-        <!-- CUERPO PRINCIPAL DEL DASHBOARD (2 PANELES SIMÉTRICOS) -->
-        <main class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- CUERPO PRINCIPAL ESTRUCTURADO EN 3 COLUMNAS SIMÉTRICAS -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             <!-- ========================================== -->
-            <!-- PANEL IZQUIERDO: ZAINTZA OROKORRA          -->
+            <!-- COLUMNA 1: NODOEN ZAINTZA                 -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <h2 class="text-base font-bold tracking-wider text-slate-200">ZAINTZA OROKORRA</h2>
-                        <div class="w-14 h-14 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
-                            <div class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="filteredRows.length">0</div>
+                        <h2 class="text-base font-bold tracking-wider text-slate-200">NODOEN ZAINTZA</h2>
+                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
+                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsNodos.total">0</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="grid grid-cols-2 gap-3 mb-6">
                         
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
-                                <span class="text-lg font-bold text-white" x-text="uniqueCursos.length">0</span>
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
+                                <span class="text-base font-bold text-white" x-text="uniqueCursos.length">0</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
                                 <div class="bg-emerald-500 h-full rounded-full" style="width: 25%;"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 text-right">25%</span>
                         </div>
 
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-semibold text-slate-400">MINTEGIAK</span>
-                                <span class="text-lg font-bold text-white" x-text="uniqueMintegias.length">0</span>
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">MINTEGIAK</span>
+                                <span class="text-base font-bold text-white" x-text="uniqueMintegias.length">0</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-gradient-to-r from-emerald-500 via-amber-500 to-purple-500 h-full rounded-full" style="width: 25%;"></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
+                                <div class="bg-gradient-to-r from-emerald-500 to-purple-500 h-full rounded-full" style="width: 25%;"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 text-right">25%</span>
                         </div>
 
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                                <span class="text-lg font-bold text-white" x-text="filteredRows.length">0</span>
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
+                                <span class="text-base font-bold text-white" x-text="statsNodos.total">0</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
                                 <div class="bg-gradient-to-r from-orange-500 via-emerald-500 to-purple-500 h-full rounded-full" style="width: 100%;"></div>
                             </div>
-                            <div class="text-[11px] text-slate-400 flex items-center gap-3">
-                                <span>Iturria:</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Egina</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Prozesuan</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazioa</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> Besteak</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-semibold text-slate-400">1. PERIODOKO EGOERA (H)</span>
-                                <span class="text-lg font-bold text-white" x-text="uniqueEgoera1.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-emerald-400 h-full rounded-full" style="width: 15%;"></div>
-                            </div>
-                            <span class="text-[10px] text-slate-400 text-right">Egoera</span>
                         </div>
 
                         <!-- ZERBITZUAK NODOA -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl flex flex-col justify-between">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="text-xs font-semibold text-slate-300">ZERBITZUAK NODOA</span>
-                            </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <span class="text-[11px] font-semibold text-slate-300 mb-1">ZERBITZUAK NODOA</span>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Zerbitzua --</option>
                                 <template x-for="mintegia in p04Mintegias" :key="mintegia">
                                     <option :value="mintegia" x-text="mintegia"></option>
@@ -132,102 +109,34 @@
                             </select>
                         </div>
 
-                        <!-- KUDEAKETA SISTEMA -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl col-span-2 flex flex-col justify-between">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="text-xs font-semibold text-slate-300">KUDEAKETA SISTEMA</span>
-                            </div>
-                            <select x-model="selectedEgoera1" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none w-full cursor-pointer">
-                                <option value="">-- Hautatu Kudeaketa --</option>
-                                <template x-for="eg in uniqueEgoera1" :key="eg">
-                                    <option :value="eg" x-text="eg"></option>
-                                </template>
-                            </select>
-                        </div>
-
                     </div>
                 </div>
 
-                <!-- LEYENDA MEJORADA CON MÉTRICAS CLAVE (PANEL IZQUIERDO) -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">LEGENDA & ESTATISTIKAK</h3>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-indigo-500 inline-block"></span>
-                                    a) Erregistro kopurua:
-                                </span>
-                                <span class="font-bold text-indigo-400" x-text="stats.total">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span>
-                                    b) Zenbat onartua:
-                                </span>
-                                <span class="font-bold text-emerald-400" x-text="stats.onartua">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span>
-                                    d) Zenbat analisian:
-                                </span>
-                                <span class="font-bold text-amber-400" x-text="stats.analisian">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span>
-                                    e) Zenbat baztertua:
-                                </span>
-                                <span class="font-bold text-rose-400" x-text="stats.baztertua">0</span>
-                            </div>
-                        </div>
+                <!-- LEYENDA NODOEN ZAINTZA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">NODOEN ESTATISTIKAK</h3>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                        <span class="font-bold text-indigo-400" x-text="statsNodos.total">0</span>
                     </div>
-                    
-                    <!-- HEATMAP / MATRIZ DE CALOR -->
-                    <div class="flex flex-col justify-between">
-                        <div class="flex text-[9px] text-slate-500 justify-between mb-1">
-                            <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
-                        </div>
-                        <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-rose-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-[9px] text-slate-500 mt-1">
-                            <span>- Egoera</span>
-                            <div class="flex gap-1 items-center">
-                                <span class="w-1.5 h-1.5 bg-slate-800 rounded-sm"></span>
-                                <span class="w-1.5 h-1.5 bg-emerald-500/50 rounded-sm"></span>
-                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-sm"></span>
-                                <span>+</span>
-                            </div>
-                        </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                        <span class="font-bold text-emerald-400" x-text="statsNodos.onartua">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                        <span class="font-bold text-amber-400" x-text="statsNodos.analisian">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                        <span class="font-bold text-rose-400" x-text="statsNodos.baztertua">0</span>
                     </div>
                 </div>
 
             </section>
 
             <!-- ========================================== -->
-            <!-- PANEL DERECHO: PROZESUEN ZAINTZA          -->
+            <!-- COLUMNA 2: PROZESUEN ZAINTZA              -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
@@ -235,13 +144,12 @@
                         <h2 class="text-base font-bold tracking-wider text-slate-200">PROZESUEN ZAINTZA</h2>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="grid grid-cols-2 gap-3 mb-6">
 
                         <!-- BLOQUE P01 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P01</span>
-                                <span class="text-[10px] text-slate-400">IKASKUNTZA ↗</span>
+                                <span class="text-xs font-bold text-white">P01 - IKASKUNTZA ↗</span>
                             </div>
                             <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
@@ -249,41 +157,12 @@
                                     <option :value="m" x-text="m"></option>
                                 </template>
                             </select>
-                            <div class="flex items-center gap-2">
-                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-gradient-to-r from-amber-500 via-emerald-500 to-cyan-500 h-full rounded-full" style="width: 35%;"></div>
-                                </div>
-                                <span class="text-[10px] text-slate-400">12%</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">ITURRI LIBURUAK</span>
-                                <span class="text-sm font-bold text-white" x-text="uniqueLibros.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-emerald-500 h-full rounded-full" style="width: 10%;"></div>
-                            </div>
-                            <span class="text-[10px] text-slate-400 text-right">4%</span>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
-                                <span class="text-sm font-bold text-white" x-text="uniqueCursos.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-amber-500 h-full rounded-full" style="width: 5%;"></div>
-                            </div>
-                            <span class="text-[10px] text-slate-400 text-right">0%</span>
                         </div>
 
                         <!-- BLOQUE P02 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P02</span>
-                                <span class="text-[10px] text-slate-400">ANTOLAKETA eta BALIABIDEAK ↗</span>
+                                <span class="text-xs font-bold text-white">P02 - ANTOLAKETA eta BALIABIDEAK ↗</span>
                             </div>
                             <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
@@ -291,39 +170,12 @@
                                     <option :value="m" x-text="m"></option>
                                 </template>
                             </select>
-                            <div class="flex items-center gap-2">
-                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-gradient-to-r from-emerald-500 to-purple-500 h-full rounded-full" style="width: 48%;"></div>
-                                </div>
-                                <span class="text-[10px] text-slate-400">24%</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">MINTEGIAK</span>
-                                <span class="text-sm font-bold text-white" x-text="uniqueMintegias.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-emerald-500 h-full rounded-full" style="width: 60%;"></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                                <span class="text-sm font-bold text-white" x-text="rows.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
-                            </div>
                         </div>
 
                         <!-- BLOQUE P03 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P03</span>
-                                <span class="text-[10px] text-slate-400">ERANTZUKIZUN SOZIALA ↗</span>
+                                <span class="text-xs font-bold text-white">P03 - ERANTZUKIZUN SOZIALA ↗</span>
                             </div>
                             <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Ambitoa --</option>
@@ -331,109 +183,89 @@
                                     <option :value="m" x-text="m"></option>
                                 </template>
                             </select>
-                            <div class="flex items-center gap-2">
-                                <div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-gradient-to-r from-amber-500 via-teal-500 to-purple-500 h-full rounded-full" style="width: 30%;"></div>
-                                </div>
-                                <span class="text-[10px] text-slate-400">18%</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">1. PERIODOKO EGOERA</span>
-                                <span class="text-sm font-bold text-white" x-text="uniqueEgoera1.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-emerald-400 h-full rounded-full" style="width: 20%;"></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between col-span-2">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">2. PERIODOKO EGOERA</span>
-                                <span class="text-sm font-bold text-white" x-text="uniqueEgoera2.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                <div class="bg-slate-500 h-full rounded-full" style="width: 25%;"></div>
-                            </div>
                         </div>
 
                     </div>
                 </div>
 
-                <!-- LEYENDA MEJORADA CON MÉTRICAS CLAVE (PANEL DERECHO) -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
-                    <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">LEGENDA & ESTATISTIKAK</h3>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-indigo-500 inline-block"></span>
-                                    a) Erregistro kopurua:
-                                </span>
-                                <span class="font-bold text-indigo-400" x-text="stats.total">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span>
-                                    b) Zenbat onartua:
-                                </span>
-                                <span class="font-bold text-emerald-400" x-text="stats.onartua">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span>
-                                    d) Zenbat analisian:
-                                </span>
-                                <span class="font-bold text-amber-400" x-text="stats.analisian">0</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
-                                <span class="flex items-center gap-2 text-slate-300 font-medium">
-                                    <span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span>
-                                    e) Zenbat baztertua:
-                                </span>
-                                <span class="font-bold text-rose-400" x-text="stats.baztertua">0</span>
-                            </div>
+                <!-- LEYENDA PROZESUEN ZAINTZA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">PROZESUEN ESTATISTIKAK</h3>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                        <span class="font-bold text-indigo-400" x-text="statsProzesuak.total">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                        <span class="font-bold text-emerald-400" x-text="statsProzesuak.onartua">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                        <span class="font-bold text-amber-400" x-text="statsProzesuak.analisian">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                        <span class="font-bold text-rose-400" x-text="statsProzesuak.baztertua">0</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- ========================================== -->
+            <!-- COLUMNA 3: MINTEGIEN ZAINTZA (NUEVA)       -->
+            <!-- ========================================== -->
+            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                        <h2 class="text-base font-bold tracking-wider text-slate-200">MINTEGIEN ZAINTZA</h2>
+                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#3b82f6_0deg_180deg,#ec4899_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
+                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsMintegiak.total">62</div>
                         </div>
                     </div>
 
-                    <!-- HEATMAP / MATRIZ DE CALOR -->
-                    <div class="flex flex-col justify-between">
-                        <div class="flex text-[9px] text-slate-500 justify-between mb-1">
-                            <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
-                        </div>
-                        <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-rose-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-[9px] text-slate-500 mt-1">
-                            <span>- Egoera</span>
-                            <div class="flex gap-1 items-center">
-                                <span class="w-1.5 h-1.5 bg-slate-800 rounded-sm"></span>
-                                <span class="w-1.5 h-1.5 bg-emerald-500/50 rounded-sm"></span>
-                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-sm"></span>
-                                <span>+</span>
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
+                                <span class="text-base font-bold text-white" x-text="statsMintegiak.total">62</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
                             </div>
                         </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <span class="text-[11px] font-semibold text-slate-300 mb-1">HAUTATU MINTEGIA / DEPARTAMENTUA</span>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
+                                <option value="">-- Denak (Guztiak) --</option>
+                                <template x-for="mintegia in uniqueMintegias" :key="mintegia">
+                                    <option :value="mintegia" x-text="mintegia"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- LEYENDA MINTEGIEN ZAINTZA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">MINTEGIEN ESTATISTIKAK</h3>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                        <span class="font-bold text-indigo-400" x-text="statsMintegiak.total">62</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                        <span class="font-bold text-emerald-400" x-text="statsMintegiak.onartua">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                        <span class="font-bold text-amber-400" x-text="statsMintegiak.analisian">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                        <span class="font-bold text-rose-400" x-text="statsMintegiak.baztertua">0</span>
                     </div>
                 </div>
 
@@ -485,7 +317,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS -->
+    <!-- LÓGICA ALPINEJS CON CÁLCULOS SEPARADOS PARA CADA LEYENDA -->
     <script>
         function dashboardData() {
             return {
@@ -560,34 +392,45 @@
                     this.rows = allParsedData;
                 },
 
-                // Propiedad computada para calcular las estadísticas reales
-                get stats() {
-                    const data = this.filteredRows;
-                    const total = data.length;
+                // Lógica helper para procesar métricas por conjunto de datos
+                calculateStats(dataset) {
+                    const total = dataset.length;
+                    let onartua = 0, analisian = 0, baztertua = 0;
 
-                    let onartua = 0;
-                    let analisian = 0;
-                    let baztertua = 0;
-
-                    data.forEach(r => {
+                    dataset.forEach(r => {
                         const st1 = (r.egoera1 || '').toLowerCase();
                         const st2 = (r.egoera2 || '').toLowerCase();
 
-                        // Conteo Onartua (Egina / Aceptado / Completado)
                         if (st1.includes('egin') || st1.includes('onartu') || st2.includes('egin') || st2.includes('onartu')) {
                             onartua++;
-                        } 
-                        // Conteo Analisian (Prozesuan / Analisis / Pendiente)
-                        else if (st1.includes('prozesu') || st1.includes('analis') || st1.includes('hasigabe') || st2.includes('prozesu') || st2.includes('analis')) {
+                        } else if (st1.includes('prozesu') || st1.includes('analis') || st1.includes('hasigabe') || st2.includes('prozesu') || st2.includes('analis')) {
                             analisian++;
-                        } 
-                        // Conteo Baztertua (Rechazado / Baztertua / Cancelado)
-                        else if (st1.includes('bazter') || st1.includes('ez') || st2.includes('bazter') || st2.includes('ez')) {
+                        } else if (st1.includes('bazter') || st1.includes('ez') || st2.includes('bazter') || st2.includes('ez')) {
                             baztertua++;
                         }
                     });
 
                     return { total, onartua, analisian, baztertua };
+                },
+
+                // Estadísticas para Nodoen Zaintza
+                get statsNodos() {
+                    return this.calculateStats(this.filteredRows);
+                },
+
+                // Estadísticas para Prozesuen Zaintza
+                get statsProzesuak() {
+                    const dataProzesuak = this.filteredRows.filter(r => r.libro !== '04.1.- ZERBITZUAK');
+                    return this.calculateStats(dataProzesuak);
+                },
+
+                // Estadísticas para Mintegien Zaintza (Muestra específica de 62 / Mintegis)
+                get statsMintegiak() {
+                    let dataMintegiak = this.rows.filter(r => r.mintegia && r.mintegia !== '');
+                    if (this.selectedMintegia) {
+                        dataMintegiak = dataMintegiak.filter(r => r.mintegia === this.selectedMintegia);
+                    }
+                    return this.calculateStats(dataMintegiak);
                 },
 
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
