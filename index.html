@@ -99,11 +99,11 @@
                                 <div class="bg-gradient-to-r from-orange-500 via-emerald-500 to-purple-500 h-full rounded-full" style="width: 100%;"></div>
                             </div>
                             <div class="text-[11px] text-slate-400 flex items-center gap-3">
-                                <span>Source:</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-orange-500 inline-block"></span> Banitszio</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> EOP</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio...</span>
-                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</span>
+                                <span>Iturria:</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Egina</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Prozesuan</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazioa</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> Besteak</span>
                             </div>
                         </div>
 
@@ -115,7 +115,7 @@
                             <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
                                 <div class="bg-emerald-400 h-full rounded-full" style="width: 15%;"></div>
                             </div>
-                            <span class="text-[10px] text-slate-400 text-right">Status</span>
+                            <span class="text-[10px] text-slate-400 text-right">Egoera</span>
                         </div>
 
                         <!-- ZERBITZUAK NODOA -->
@@ -149,23 +149,57 @@
                     </div>
                 </div>
 
-                <!-- LEYENDA Y MINICHART -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
+                <!-- LEYENDA Y HEATMAP CORREGIDOS (PANEL IZQUIERDO) -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
                     <div>
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
                         <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Egina</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-500 inline-block"></span> Prozesuan</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Hasigabea</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-purple-500 inline-block"></span> Balioztatzean</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-slate-500 inline-block"></span> Ez Aplikagarria</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block"></span> Informazioa</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-teal-400 inline-block"></span> Egoera</div>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-end">
-                        <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
-                            [ Heatmap / Minichart ]
+                    
+                    <!-- HEATMAP / MATRIZ DE CALOR ESTILO GITHUB -->
+                    <div class="flex flex-col justify-between">
+                        <div class="flex text-[9px] text-slate-500 justify-between mb-1">
+                            <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
+                        </div>
+                        <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
+                            <!-- Fila de celdas coloreadas -->
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-purple-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[9px] text-slate-500 mt-1">
+                            <span>- Egoera</span>
+                            <div class="flex gap-1 items-center">
+                                <span class="w-1.5 h-1.5 bg-slate-800 rounded-sm"></span>
+                                <span class="w-1.5 h-1.5 bg-emerald-500/50 rounded-sm"></span>
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-sm"></span>
+                                <span>+</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -183,7 +217,7 @@
 
                     <div class="grid grid-cols-2 gap-4 mb-6">
 
-                        <!-- BLOQUE P01 (Estrategia) -> Muestra solo sus 6 ámbitos -->
+                        <!-- BLOQUE P01 -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs font-bold text-white">P01</span>
@@ -225,7 +259,7 @@
                             <span class="text-[10px] text-slate-400 text-right">0%</span>
                         </div>
 
-                        <!-- BLOQUE P02 (Operativa) -> Muestra solo sus ámbitos -->
+                        <!-- BLOQUE P02 -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs font-bold text-white">P02</span>
@@ -265,7 +299,7 @@
                             </div>
                         </div>
 
-                        <!-- BLOQUE P03 (Sortzailea) -> Muestra solo sus ámbitos -->
+                        <!-- BLOQUE P03 -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs font-bold text-white">P03</span>
@@ -308,23 +342,57 @@
                     </div>
                 </div>
 
-                <!-- LEYENDA Y MINICHART -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-2 gap-4 mt-auto">
+                <!-- LEYENDA Y HEATMAP CORREGIDOS (PANEL DERECHO) -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
                     <div>
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
                         <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-emerald-500 inline-block"></span> Banitszio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-cyan-500 inline-block"></span> EOP</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-amber-500 inline-block"></span> Bantitszio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-purple-500 inline-block"></span> Informazio ...</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-slate-500 inline-block"></span> Informazio</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-blue-500 inline-block"></span> 2%</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-teal-500 inline-block"></span> Status</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Egina</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-500 inline-block"></span> Prozesuan</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Hasigabea</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-purple-500 inline-block"></span> Balioztatzean</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-slate-500 inline-block"></span> Ez Aplikagarria</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block"></span> Informazioa</div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-teal-400 inline-block"></span> Egoera</div>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-end">
-                        <div class="w-full h-16 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center text-slate-500 text-xs">
-                            [ Heatmap / Minichart ]
+
+                    <!-- HEATMAP / MATRIZ DE CALOR ESTILO GITHUB -->
+                    <div class="flex flex-col justify-between">
+                        <div class="flex text-[9px] text-slate-500 justify-between mb-1">
+                            <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
+                        </div>
+                        <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
+                            <!-- Fila de celdas coloreadas -->
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-purple-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-blue-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-emerald-400 rounded-sm"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[9px] text-slate-500 mt-1">
+                            <span>- Egoera</span>
+                            <div class="flex gap-1 items-center">
+                                <span class="w-1.5 h-1.5 bg-slate-800 rounded-sm"></span>
+                                <span class="w-1.5 h-1.5 bg-emerald-500/50 rounded-sm"></span>
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-sm"></span>
+                                <span>+</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -377,7 +445,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS Y DESCARGA DIRECTA -->
+    <!-- LÓGICA ALPINEJS -->
     <script>
         function dashboardData() {
             return {
@@ -455,7 +523,6 @@
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
                 get uniqueCursos() { return [...new Set(this.rows.map(r => r.curso))].filter(Boolean).sort(); },
                 
-                // Filtros específicos para cada bloque de procesos
                 get p01Mintegias() {
                     return [...new Set(this.rows.filter(r => r.libro === '01.- ESTRATEGIA').map(r => r.mintegia))].filter(Boolean).sort();
                 },
