@@ -149,28 +149,48 @@
                     </div>
                 </div>
 
-                <!-- LEYENDA Y HEATMAP CORREGIDOS (PANEL IZQUIERDO) -->
+                <!-- LEYENDA MEJORADA CON MÉTRICAS CLAVE (PANEL IZQUIERDO) -->
                 <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
                     <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Egina</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-500 inline-block"></span> Prozesuan</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Hasigabea</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-purple-500 inline-block"></span> Balioztatzean</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-slate-500 inline-block"></span> Ez Aplikagarria</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block"></span> Informazioa</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-teal-400 inline-block"></span> Egoera</div>
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">LEGENDA & ESTATISTIKAK</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-indigo-500 inline-block"></span>
+                                    a) Erregistro kopurua:
+                                </span>
+                                <span class="font-bold text-indigo-400" x-text="stats.total">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span>
+                                    b) Zenbat onartua:
+                                </span>
+                                <span class="font-bold text-emerald-400" x-text="stats.onartua">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span>
+                                    d) Zenbat analisian:
+                                </span>
+                                <span class="font-bold text-amber-400" x-text="stats.analisian">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span>
+                                    e) Zenbat baztertua:
+                                </span>
+                                <span class="font-bold text-rose-400" x-text="stats.baztertua">0</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- HEATMAP / MATRIZ DE CALOR ESTILO GITHUB -->
+                    <!-- HEATMAP / MATRIZ DE CALOR -->
                     <div class="flex flex-col justify-between">
                         <div class="flex text-[9px] text-slate-500 justify-between mb-1">
                             <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
                         </div>
                         <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
-                            <!-- Fila de celdas coloreadas -->
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
@@ -181,7 +201,7 @@
                             <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-purple-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-rose-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
@@ -342,28 +362,48 @@
                     </div>
                 </div>
 
-                <!-- LEYENDA Y HEATMAP CORREGIDOS (PANEL DERECHO) -->
+                <!-- LEYENDA MEJORADA CON MÉTRICAS CLAVE (PANEL DERECHO) -->
                 <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
                     <div>
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">LEGENDA</h3>
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-slate-300">
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Egina</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-500 inline-block"></span> Prozesuan</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span> Hasigabea</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-purple-500 inline-block"></span> Balioztatzean</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-slate-500 inline-block"></span> Ez Aplikagarria</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block"></span> Informazioa</div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-teal-400 inline-block"></span> Egoera</div>
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">LEGENDA & ESTATISTIKAK</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-indigo-500 inline-block"></span>
+                                    a) Erregistro kopurua:
+                                </span>
+                                <span class="font-bold text-indigo-400" x-text="stats.total">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span>
+                                    b) Zenbat onartua:
+                                </span>
+                                <span class="font-bold text-emerald-400" x-text="stats.onartua">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block"></span>
+                                    d) Zenbat analisian:
+                                </span>
+                                <span class="font-bold text-amber-400" x-text="stats.analisian">0</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800">
+                                <span class="flex items-center gap-2 text-slate-300 font-medium">
+                                    <span class="w-2.5 h-2.5 rounded-sm bg-rose-500 inline-block"></span>
+                                    e) Zenbat baztertua:
+                                </span>
+                                <span class="font-bold text-rose-400" x-text="stats.baztertua">0</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- HEATMAP / MATRIZ DE CALOR ESTILO GITHUB -->
+                    <!-- HEATMAP / MATRIZ DE CALOR -->
                     <div class="flex flex-col justify-between">
                         <div class="flex text-[9px] text-slate-500 justify-between mb-1">
                             <span>Mai</span><span>Eka</span><span>Uzt</span><span>Aho</span><span>Ira</span><span>Urr</span>
                         </div>
                         <div class="grid grid-rows-4 grid-flow-col gap-1 w-full h-16 bg-slate-900/90 p-1.5 rounded-lg border border-slate-800/80">
-                            <!-- Fila de celdas coloreadas -->
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
@@ -374,7 +414,7 @@
                             <div class="w-2.5 h-2.5 bg-cyan-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-amber-500 rounded-sm"></div>
-                            <div class="w-2.5 h-2.5 bg-purple-500 rounded-sm"></div>
+                            <div class="w-2.5 h-2.5 bg-rose-500 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-slate-800 rounded-sm"></div>
                             <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
@@ -518,6 +558,36 @@
                     }
 
                     this.rows = allParsedData;
+                },
+
+                // Propiedad computada para calcular las estadísticas reales
+                get stats() {
+                    const data = this.filteredRows;
+                    const total = data.length;
+
+                    let onartua = 0;
+                    let analisian = 0;
+                    let baztertua = 0;
+
+                    data.forEach(r => {
+                        const st1 = (r.egoera1 || '').toLowerCase();
+                        const st2 = (r.egoera2 || '').toLowerCase();
+
+                        // Conteo Onartua (Egina / Aceptado / Completado)
+                        if (st1.includes('egin') || st1.includes('onartu') || st2.includes('egin') || st2.includes('onartu')) {
+                            onartua++;
+                        } 
+                        // Conteo Analisian (Prozesuan / Analisis / Pendiente)
+                        else if (st1.includes('prozesu') || st1.includes('analis') || st1.includes('hasigabe') || st2.includes('prozesu') || st2.includes('analis')) {
+                            analisian++;
+                        } 
+                        // Conteo Baztertua (Rechazado / Baztertua / Cancelado)
+                        else if (st1.includes('bazter') || st1.includes('ez') || st2.includes('bazter') || st2.includes('ez')) {
+                            baztertua++;
+                        }
+                    });
+
+                    return { total, onartua, analisian, baztertua };
                 },
 
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
