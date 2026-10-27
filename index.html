@@ -20,31 +20,15 @@
 
     <div class="max-w-[1600px] mx-auto space-y-6">
         
-        <!-- CABECERA PRINCIPAL CON LOGOTIPO VECTORIAL CORregido -->
-        <header class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col lg:flex-row justify-between items-center gap-6 transition-colors duration-300">
-            
-            <!-- TÍTULO Y DESCRIPCIÓN -->
-            <div class="text-center lg:text-left">
+        <!-- CABECERA PRINCIPAL CON ACCESOS DIRECTOS ACTUALIZADOS -->
+        <header class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-colors duration-300">
+            <div>
                 <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
             </div>
-
-            <!-- LOGOTIPO VECTORIAL EASO POLITEKNIKA (SÍMBOLO OFICIAL CORREGIDO) -->
-            <div class="flex items-center justify-center px-4 py-2 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-200/60 dark:border-slate-800/60">
-                <svg class="h-10 w-auto" viewBox="0 0 420 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Círculo corporativo azul -->
-                    <circle cx="50" cy="50" r="42" fill="#1b6ca8"/>
-                    <!-- Símbolo / Isotipo oficial exacto -->
-                    <path d="M30 72C29 65 31 52 38 42C43 35 48 31 55 27C58 25 61 24 64 24C62 25 58 27 55 31C51 36 47 43 45 50C48 48 52 47 56 48C61 49 64 53 62 57C60 62 55 65 48 64C44 63 41 60 40 57C38 64 35 70 30 72Z" fill="#111827"/>
-                    <ellipse cx="55" cy="40" rx="4" ry="2.5" transform="rotate(-20 55 40)" fill="#1b6ca8"/>
-                    <!-- Texto: easo politeknika -->
-                    <text x="110" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="600" fill="#1b6ca8" letter-spacing="-1">easo</text>
-                    <text x="110" y="78" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="600" fill="#1b6ca8" letter-spacing="-1">politeknikoa</text>
-                </svg>
-            </div>
             
-            <!-- CONTENEDOR DE BOTONES Y ENLACES -->
-            <div class="flex flex-wrap items-center justify-center lg:justify-end gap-3">
+            <!-- CONTENEDOR DE BOTONES Y ENLACES ACTUALIZADOS -->
+            <div class="flex flex-wrap items-center gap-3">
                 <!-- Enlace a Nodo eta Prozesuen Zaintza -->
                 <a href="https://prozesuendashboarada.vercel.app/" target="_blank" class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-700 dark:text-indigo-300 px-3 py-2 rounded-xl text-xs font-semibold border border-indigo-500/30 transition flex items-center gap-1.5">
                     <span>🔗 NODO eta PROZESUEN ZAINTZA</span>
@@ -485,7 +469,14 @@
 
                 get filteredRows() {
                     return this.rows.filter(row => {
-                        5
+                        const matchesSearch = !this.searchQuery || 
+                            Object.values(row).some(val => String(val).toLowerCase().includes(this.searchQuery.toLowerCase()));
+
+                        return matchesSearch &&
+                               (!this.selectedLibro || row.libro === this.selectedLibro) &&
+                               (!this.selectedCurso || row.curso === this.selectedCurso) &&
+                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia) &&
+                               (!this.selectedEgoera1 || row.egoera1 === this.selectedEgoera1);
                     });
                 }
             }
