@@ -58,15 +58,15 @@
             <!-- COLUMNA 1: NODOEN ZAINTZA                 -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
                         <h2 class="text-base font-bold tracking-wider text-slate-200">NODOEN ZAINTZA</h2>
                         <div class="w-12 h-12 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
                             <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsNodos.total">0</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-3 mb-6">
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
@@ -97,8 +97,8 @@
                             </div>
                         </div>
 
-                        <!-- ZERBITZUAK NODOA -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                        <!-- ZERBITZUAK NODOA con margen inferior holgado para que el desplegable no pise nada -->
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between mb-4">
                             <span class="text-[11px] font-semibold text-slate-300 mb-1">04.1.- ZERBITZUAK NODOA</span>
                             <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Zerbitzua --</option>
@@ -111,7 +111,7 @@
                 </div>
 
                 <!-- LEYENDA NODOEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-6 space-y-2 text-xs">
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
                     <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">NODOEN ESTATISTIKAK</h3>
                     <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
                         <span class="text-slate-300">a) Erregistro kopurua:</span>
@@ -136,12 +136,12 @@
             <!-- COLUMNA 2: PROZESUEN ZAINTZA              -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
                         <h2 class="text-base font-bold tracking-wider text-slate-200">PROZESUEN ZAINTZA</h2>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-3 mb-6">
                         <!-- BLOQUE P01 -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
                             <div class="flex justify-between items-center">
@@ -184,7 +184,7 @@
                 </div>
 
                 <!-- LEYENDA PROZESUEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-6 space-y-2 text-xs">
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
                     <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">PROZESUEN ESTATISTIKAK</h3>
                     <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
                         <span class="text-slate-300">a) Erregistro kopurua:</span>
@@ -209,15 +209,15 @@
             <!-- COLUMNA 3: MINTEGIEN ZAINTZA               -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
                         <h2 class="text-base font-bold tracking-wider text-slate-200">MINTEGIEN ZAINTZA</h2>
                         <div class="w-12 h-12 rounded-full bg-[conic-gradient(#3b82f6_0deg_180deg,#ec4899_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
                             <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsMintegiak.total">62</div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-2 gap-3 mb-6">
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
@@ -241,7 +241,7 @@
                 </div>
 
                 <!-- LEYENDA MINTEGIEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-6 space-y-2 text-xs">
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
                     <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">MINTEGIEN ESTATISTIKAK</h3>
                     <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
                         <span class="text-slate-300">a) Erregistro kopurua:</span>
