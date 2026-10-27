@@ -20,30 +20,19 @@
 
     <div class="max-w-[1600px] mx-auto space-y-6">
         
-        <!-- CABECERA PRINCIPAL CON LOGOTIPO VECTORIAL CORregido -->
+        <!-- CABECERA PRINCIPAL CON ACCESOS DIRECTOS -->
         <header class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col lg:flex-row justify-between items-center gap-6 transition-colors duration-300">
-            
-            <!-- TÍTULO Y DESCRIPCIÓN -->
-            <div class="text-center lg:text-left">
+            <div>
                 <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
             </div>
 
-            <!-- LOGOTIPO VECTORIAL EASO POLITEKNIKA (SÍMBOLO OFICIAL CORREGIDO) -->
+            <!-- LOGOTIPO DE EASO POLITEKNIKA -->
             <div class="flex items-center justify-center px-4 py-2 bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-200/60 dark:border-slate-800/60">
-                <svg class="h-10 w-auto" viewBox="0 0 420 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Círculo corporativo azul -->
-                    <circle cx="50" cy="50" r="42" fill="#1b6ca8"/>
-                    <!-- Símbolo / Isotipo oficial exacto -->
-                    <path d="M30 72C29 65 31 52 38 42C43 35 48 31 55 27C58 25 61 24 64 24C62 25 58 27 55 31C51 36 47 43 45 50C48 48 52 47 56 48C61 49 64 53 62 57C60 62 55 65 48 64C44 63 41 60 40 57C38 64 35 70 30 72Z" fill="#111827"/>
-                    <ellipse cx="55" cy="40" rx="4" ry="2.5" transform="rotate(-20 55 40)" fill="#1b6ca8"/>
-                    <!-- Texto: easo politeknika -->
-                    <text x="110" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="600" fill="#1b6ca8" letter-spacing="-1">easo</text>
-                    <text x="110" y="78" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="600" fill="#1b6ca8" letter-spacing="-1">politeknikoa</text>
-                </svg>
+                <img src="https://www.easo.eus/o/easo-theme/images/logo.png" alt="Easo Politeknika Logo" class="h-10 w-auto object-contain dark:brightness-110">
             </div>
             
-            <!-- CONTENEDOR DE BOTONES Y ENLACES -->
+            <!-- CONTENEDOR DE BOTONES Y ENLACES A OTROS DASHBOARDS -->
             <div class="flex flex-wrap items-center justify-center lg:justify-end gap-3">
                 <!-- Enlace a Nodo eta Prozesuen Zaintza -->
                 <a href="https://prozesuendashboarada.vercel.app/" target="_blank" class="bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-700 dark:text-indigo-300 px-3 py-2 rounded-xl text-xs font-semibold border border-indigo-500/30 transition flex items-center gap-1.5">
@@ -281,7 +270,7 @@
                     <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">MINTEGIEN ESTATISTIKAK</h3>
                     <div class="flex justify-between items-center bg-white dark:bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-700 dark:text-slate-300">a) Erregistro kopurua:</span>
-                        <span class="font-bold text-indigo-600 dark:text-indigo-400" x-text="statsMintegiak.total">62</span>
+                        <span class="font-bold text-indigo-600 dark:text-indigo-400" x-text="statsMintegiak.total">0</span>
                     </div>
                     <div class="flex justify-between items-center bg-white dark:bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-800">
                         <span class="text-slate-700 dark:text-slate-300">b) Zenbat onartua:</span>
@@ -365,8 +354,10 @@
                         { name: '01.- ESTRATEGIA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSN5pK9Dn9esNdcnjuYeU7utXIzx1YLhcfQ96KZrO1IIGsa5r4xXtCwoOVsnaKU1rZZsdzheEIINBlj/pub?gid=1194051936&single=true&output=csv" },
                         { name: '02.- OPERATIBA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSVcp911-20UPT0C_jlJB0TT2Y5l3rCwLlcfMRziXc0uR4s5uv3lt2u0y8V2L1SmiFY8vKJgWWmHaLl/pub?gid=1194051936&single=true&output=csv" },
                         { name: '03.- SORTZAILEA', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSONa6aFXJG3Zbo3gD5WIVq0escct1VtAp6pKvw4C13C2QC-zxlHE9Z6PCEcWCJCgXzw_UWdINfFdte/pub?gid=1194051936&single=true&output=csv" },
-                        { name: '04.1.- ZERBITZUAK', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv" }
+                        { name: '04.1.- ZERBITZUAK', url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-_38aaBI1MgmlqFoI5YuE7O4mCZBYcTfywHCzv2QdCbdCbLt_WXnR9h-FtM5iXc9IHDtW5u6aj4Rn/pub?gid=1194051936&single=true&output=csv" ]
                     ];
+
+                    let allPixelsSVG = ""; // Placeholder para mantener la estructura
 
                     let allParsedData = [];
 
@@ -383,28 +374,29 @@
                                         results.data.forEach((cols, index) => {
                                             if (!cols || cols.length === 0) return;
 
-                                            const cursoVal = cols[0] ? String(cols[0]).trim() : '';
-                                            const mintegiaVal = cols[1] ? String(cols[1]).trim() : '';
+                                            const crucialCol0 = cols[0] ? String(cols[0]).trim() : '';
+                                            const crucialCol1 = cols[1] ? String(cols[1]).trim() : '';
                                             
-                                            const lowerCurso = cursoVal.toLowerCase();
-                                            const lowerMintegia = mintegiaVal.toLowerCase();
+                                            const lowerCurso = crucialCol0.toLowerCase();
+                                            const lowerMintegia = crucialCol1.toLowerCase();
 
-                                            if (cursoVal !== '' && 
+                                            if (crucialCol0 !== '' && 
                                                 !lowerCurso.includes('ikasturtea') && 
                                                 !lowerCurso.includes('mikel') && 
                                                 !lowerCurso.includes('arduraduna') &&
                                                 !lowerMintegia.includes('arduraduna') &&
+                                                !lowerMintegia.assets &&
                                                 !lowerMintegia.includes('mikel')) {
                                                 
                                                 allParsedData.push({
                                                     id: `${sheetIndex}-${index}`,
                                                     libro: sheet.name,
-                                                    curso: cursoVal,
-                                                    mintegia: mintegiaVal,
+                                                    curso: crucialCol0,
+                                                    mintegia: crucialCol1,
                                                     iturria: cols[2] ? String(cols[2]).trim() : 'Zehaztu gabe',
                                                     link: cols[3] ? String(cols[3]).trim() : '',
                                                     egoera1: cols[7] ? String(cols[7]).trim() : 'Zehaztu gabe',
-                                                    egoera2: cols[11] ? String(cols[11]).trim() : 'Zehaztu gabe'
+                                                    egoera2: cols[11] ? String(cols[11]).trim() : 'Zegaztu gabe'
                                                 });
                                             }
                                         });
@@ -485,7 +477,14 @@
 
                 get filteredRows() {
                     return this.rows.filter(row => {
-                        5
+                        const matchesSearch = !this.searchQuery || 
+                            Object.values(row).some(val => String(val).toLowerCase().includes(this.searchQuery.toLowerCase()));
+
+                        return matchesSearch &&
+                               (!this.selectedLibro || row.libro === this.selectedLibro) &&
+                               (!this.selectedCurso || row.curso === this.selectedCurso) &&
+                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia) &&
+                               (!this.selectedEgoera1 || row.egoera1 === this.selectedEgoera1);
                     });
                 }
             }
