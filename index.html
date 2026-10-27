@@ -15,16 +15,31 @@
 
     <div class="max-w-[1600px] mx-auto space-y-6">
         
-        <!-- CABECERA PRINCIPAL -->
+        <!-- CABECERA PRINCIPAL CON ACCESOS DIRECTOS -->
         <header class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
                 <p class="text-sm text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
             </div>
-            <button @click="darkMode = !darkMode" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 transition cursor-pointer">
-                <span x-show="!darkMode">🌙 Modu Iluna</span>
-                <span x-show="darkMode">☀ Modu Argia</span>
-            </button>
+            
+            <!-- CONTENEDOR DE BOTONES Y ENLACES A OTROS DASHBOARDS -->
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Enlace a Dashboard Bateratua -->
+                <a href="https://prozesuendashboarada.vercel.app/" target="_blank" class="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 px-3 py-2 rounded-xl text-xs font-semibold border border-indigo-500/30 transition flex items-center gap-1.5">
+                    <span>🔗 Dashboard Bateratua</span>
+                </a>
+
+                <!-- Enlace a Dashboard Analitikoa -->
+                <a href="https://zaintzaorokorra.netlify.app/" target="_blank" class="bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 px-3 py-2 rounded-xl text-xs font-semibold border border-purple-500/30 transition flex items-center gap-1.5">
+                    <span>📈 Dashboard Analitikoa</span>
+                </a>
+
+                <!-- Botón de Modo Iluna -->
+                <button @click="darkMode = !darkMode" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 transition cursor-pointer">
+                    <span x-show="!darkMode">🌙 Modu Iluna</span>
+                    <span x-show="darkMode">☀ Modu Argia</span>
+                </button>
+            </div>
         </header>
 
         <!-- BARRA DE HERRAMIENTAS Y FILTROS UNIFICADA -->
