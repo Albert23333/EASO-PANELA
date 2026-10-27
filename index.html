@@ -98,9 +98,9 @@
                             </div>
                         </div>
 
-                        <!-- ZERBITZUAK NODOA -->
+                        <!-- ZERBITZUAK NODOA (Corregido para desplegar los ámbitos de servicios) -->
                         <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <span class="text-[11px] font-semibold text-slate-300 mb-1">ZERBITZUAK NODOA</span>
+                            <span class="text-[11px] font-semibold text-slate-300 mb-1">04.1.- ZERBITZUAK NODOA</span>
                             <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
                                 <option value="">-- Hautatu Zerbitzua --</option>
                                 <template x-for="mintegia in p04Mintegias" :key="mintegia">
@@ -212,7 +212,7 @@
             </section>
 
             <!-- ========================================== -->
-            <!-- COLUMNA 3: MINTEGIEN ZAINTZA (NUEVA)       -->
+            <!-- COLUMNA 3: MINTEGIEN ZAINTZA               -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
@@ -317,7 +317,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS CON CÁLCULOS SEPARADOS PARA CADA LEYENDA -->
+    <!-- LÓGICA ALPINEJS -->
     <script>
         function dashboardData() {
             return {
@@ -392,7 +392,6 @@
                     this.rows = allParsedData;
                 },
 
-                // Lógica helper para procesar métricas por conjunto de datos
                 calculateStats(dataset) {
                     const total = dataset.length;
                     let onartua = 0, analisian = 0, baztertua = 0;
@@ -413,18 +412,15 @@
                     return { total, onartua, analisian, baztertua };
                 },
 
-                // Estadísticas para Nodoen Zaintza
                 get statsNodos() {
                     return this.calculateStats(this.filteredRows);
                 },
 
-                // Estadísticas para Prozesuen Zaintza
                 get statsProzesuak() {
                     const dataProzesuak = this.filteredRows.filter(r => r.libro !== '04.1.- ZERBITZUAK');
                     return this.calculateStats(dataProzesuak);
                 },
 
-                // Estadísticas para Mintegien Zaintza (Muestra específica de 62 / Mintegis)
                 get statsMintegiak() {
                     let dataMintegiak = this.rows.filter(r => r.mintegia && r.mintegia !== '');
                     if (this.selectedMintegia) {
