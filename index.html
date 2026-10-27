@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="eu" :class="{ 'dark': darkMode }">
+<html lang="eu" x-data="dashboardData()" :class="{ 'dark': darkMode }" x-init="init()">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@
     <!-- PapaParse para CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased min-h-screen p-6 transition-colors duration-300" x-data="dashboardData()" x-init="init()">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased min-h-screen p-6 transition-colors duration-300">
 
     <div class="max-w-[1600px] mx-auto space-y-6">
         
