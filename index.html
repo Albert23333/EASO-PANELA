@@ -27,6 +27,38 @@
             </button>
         </header>
 
+        <!-- BARRA DE NAVEGACIÓN RÁPIDA (NODO, PROZESUEN ZAINTZA, MINTEGIEN ZAINTZA, DUALA) -->
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex flex-wrap gap-2 items-center justify-between">
+            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
+                <span class="text-xs font-bold text-slate-400 px-2 uppercase tracking-wider">Atalak:</span>
+                <button @click="selectedLibro = ''; selectedMintegia = ''" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
+                        :class="!selectedLibro && !selectedMintegia ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                    Guztiak
+                </button>
+                <button @click="selectedLibro = '01.- ESTRATEGIA'" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
+                        :class="selectedLibro === '01.- ESTRATEGIA' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                    NODO (Estrategia)
+                </button>
+                <button @click="selectedLibro = ''; selectedMintegia = ''" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
+                        :class="selectedLibro === '' && selectedMintegia === '' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                    PROZESUEN ZAINTZA
+                </button>
+                <button @click="selectedLibro = '04.1.- ZERBITZUAK'" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
+                        :class="selectedLibro === '04.1.- ZERBITZUAK' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                    MINTEGIEN ZAINTZA
+                </button>
+                <button @click="selectedLibro = 'DUALA'" 
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
+                        :class="selectedLibro === 'DUALA' ? 'bg-teal-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                    DUALA
+                </button>
+            </div>
+        </div>
+
         <!-- BARRA DE HERRAMIENTAS Y FILTROS UNIFICADA -->
         <div class="flex flex-col md:flex-row gap-4">
             <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
@@ -51,11 +83,11 @@
             </div>
         </div>
 
-        <!-- CUERPO PRINCIPAL ESTRUCTURADO EN 3 COLUMNAS SIMÉTRICAS -->
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- CUERPO PRINCIPAL ESTRUCTURADO EN 4 COLUMNAS SIMÉTRICAS -->
+        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
             <!-- ========================================== -->
-            <!-- COLUMNA 1: NODOEN ZAINTZA                 -->
+            <!-- COLUMNA 1: NODOEN ZAINTZA                  -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
@@ -136,7 +168,7 @@
             </section>
 
             <!-- ========================================== -->
-            <!-- COLUMNA 2: PROZESUEN ZAINTZA              -->
+            <!-- COLUMNA 2: PROZESUEN ZAINTZA               -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
@@ -212,7 +244,7 @@
             </section>
 
             <!-- ========================================== -->
-            <!-- COLUMNA 3: MINTEGIEN ZAINTZA (NUEVA)       -->
+            <!-- COLUMNA 3: MINTEGIEN ZAINTZA               -->
             <!-- ========================================== -->
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
@@ -271,6 +303,66 @@
 
             </section>
 
+            <!-- ========================================== -->
+            <!-- COLUMNA 4: DUALA                           -->
+            <!-- ========================================== -->
+            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                        <h2 class="text-base font-bold tracking-wider text-slate-200">DUALA</h2>
+                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#14b8a6_0deg_180deg,#06b6d4_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
+                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsDuala.total">0</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
+                                <span class="text-base font-bold text-white" x-text="statsDuala.total">0</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
+                                <div class="bg-teal-500 h-full rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
+                            <span class="text-[11px] font-semibold text-slate-300 mb-1">DUALA ESPARRUA / EREMUA</span>
+                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
+                                <option value="">-- Denak (Guztiak) --</option>
+                                <template x-for="dualaItem in dualaMintegias" :key="dualaItem">
+                                    <option :value="dualaItem" x-text="dualaItem"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- LEYENDA DUALA -->
+                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">DUALA ESTATISTIKAK</h3>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                        <span class="font-bold text-indigo-400" x-text="statsDuala.total">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                        <span class="font-bold text-emerald-400" x-text="statsDuala.onartua">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                        <span class="font-bold text-amber-400" x-text="statsDuala.analisian">0</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
+                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                        <span class="font-bold text-rose-400" x-text="statsDuala.baztertua">0</span>
+                    </div>
+                </div>
+
+            </section>
+
         </main>
 
         <!-- TABLA INFERIOR DE DATOS DETALLADOS -->
@@ -317,7 +409,7 @@
 
     </div>
 
-    <!-- LÓGICA ALPINEJS CON CÁLCULOS SEPARADOS PARA CADA LEYENDA -->
+    <!-- LÓGICA ALPINEJS -->
     <script>
         function dashboardData() {
             return {
@@ -392,7 +484,6 @@
                     this.rows = allParsedData;
                 },
 
-                // Lógica helper para procesar métricas por conjunto de datos
                 calculateStats(dataset) {
                     const total = dataset.length;
                     let onartua = 0, analisian = 0, baztertua = 0;
@@ -413,24 +504,40 @@
                     return { total, onartua, analisian, baztertua };
                 },
 
-                // Estadísticas para Nodoen Zaintza
                 get statsNodos() {
                     return this.calculateStats(this.filteredRows);
                 },
 
-                // Estadísticas para Prozesuen Zaintza
                 get statsProzesuak() {
                     const dataProzesuak = this.filteredRows.filter(r => r.libro !== '04.1.- ZERBITZUAK');
                     return this.calculateStats(dataProzesuak);
                 },
 
-                // Estadísticas para Mintegien Zaintza (Muestra específica de 62 / Mintegis)
                 get statsMintegiak() {
                     let dataMintegiak = this.rows.filter(r => r.mintegia && r.mintegia !== '');
                     if (this.selectedMintegia) {
                         dataMintegiak = dataMintegiak.filter(r => r.mintegia === this.selectedMintegia);
                     }
                     return this.calculateStats(dataMintegiak);
+                },
+
+                get statsDuala() {
+                    let dataDuala = this.rows.filter(r => 
+                        (r.libro && r.libro.toLowerCase().includes('duala')) ||
+                        (r.mintegia && r.mintegia.toLowerCase().includes('duala')) ||
+                        (r.iturria && r.iturria.toLowerCase().includes('duala'))
+                    );
+                    if (this.selectedMintegia) {
+                        dataDuala = dataDuala.filter(r => r.mintegia === this.selectedMintegia);
+                    }
+                    return this.calculateStats(dataDuala);
+                },
+
+                get dualaMintegias() {
+                    return [...new Set(this.rows.filter(r => 
+                        (r.libro && r.libro.toLowerCase().includes('duala')) ||
+                        (r.mintegia && r.mintegia.toLowerCase().includes('duala'))
+                    ).map(r => r.mintegia))].filter(Boolean).sort();
                 },
 
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
