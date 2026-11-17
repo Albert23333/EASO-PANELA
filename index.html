@@ -27,30 +27,31 @@
             </button>
         </header>
 
-        <!-- BARRA DE NAVEGACIÓN RÁPIDA (NODO, PROZESUEN ZAINTZA, MINTEGIEN ZAINTZA, DUALA) -->
+        <!-- BARRA DE NAVEGACIÓN RÁPIDA (ENLACES EXTERNOS Y FILTROS INTERNOS) -->
         <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex flex-wrap gap-2 items-center justify-between">
             <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
-                <span class="text-xs font-bold text-slate-400 px-2 uppercase tracking-wider">Atalak:</span>
+                <span class="text-xs font-bold text-slate-400 px-2 uppercase tracking-wider">Atalak / Estekak:</span>
+                
+                <!-- Botón Inicio / Todos -->
                 <button @click="selectedLibro = ''; selectedMintegia = ''" 
                         class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
                         :class="!selectedLibro && !selectedMintegia ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
-                    Guztiak
+                    Guztiak (Nagusia)
                 </button>
-                <button @click="selectedLibro = '01.- ESTRATEGIA'" 
-                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
-                        :class="selectedLibro === '01.- ESTRATEGIA' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
-                    NODO (Estrategia)
-                </button>
-                <button @click="selectedLibro = ''; selectedMintegia = ''" 
-                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
-                        :class="selectedLibro === '' && selectedMintegia === '' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
-                    PROZESUEN ZAINTZA
-                </button>
-                <button @click="selectedLibro = '04.1.- ZERBITZUAK'" 
-                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
-                        :class="selectedLibro === '04.1.- ZERBITZUAK' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
-                    MINTEGIEN ZAINTZA
-                </button>
+
+                <!-- Enlace Externo a NODOAK (Vercel) -->
+                <a href="https://prozesuendashboarada.vercel.app/" target="_blank" 
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-amber-400 hover:bg-slate-700 border border-amber-500/30 transition flex items-center gap-1.5">
+                    <span>NODOEN ZAINTZA ↗</span>
+                </a>
+
+                <!-- Enlace Externo a MINTEGIAK (Netlify) -->
+                <a href="https://zaintzaorokorra.netlify.app/" target="_blank" 
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-pink-400 hover:bg-slate-700 border border-pink-500/30 transition flex items-center gap-1.5">
+                    <span>MINTEGIEN ZAINTZA ↗</span>
+                </a>
+
+                <!-- Filtro rápido DUALA -->
                 <button @click="selectedLibro = 'DUALA'" 
                         class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
                         :class="selectedLibro === 'DUALA' ? 'bg-teal-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
