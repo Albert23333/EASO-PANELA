@@ -11,71 +11,71 @@
     <!-- PapaParse para CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-6" x-data="dashboardData()" x-init="init()">
+<body :class="darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'" class="font-sans antialiased min-h-screen p-4 lg:p-6 transition-colors duration-300" x-data="dashboardData()" x-init="init()">
 
-    <div class="max-w-[1600px] mx-auto space-y-6">
+    <div class="max-w-[1750px] mx-auto space-y-4">
         
-        <!-- CABECERA PRINCIPAL -->
-        <header class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold">Zaintza Ekosistema</h1>
-                <p class="text-sm text-slate-400 mt-1">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
+        <!-- CABECERA Y NAVEGACIÓN INTEGRADA -->
+        <header :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="px-6 py-4 rounded-2xl border flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4 shadow-sm transition-colors">
+            <div class="flex items-center gap-3">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">NAGUSIA</span>
+                <div>
+                    <h1 class="text-xl font-bold leading-tight">Zaintza Ekosistema</h1>
+                    <p class="text-xs opacity-60">Dashboard Nagusia - Nabigazio eta Kontrol Panela</p>
+                </div>
             </div>
-            <button @click="darkMode = !darkMode" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-700 transition cursor-pointer">
-                <span x-show="!darkMode">🌙 Modu Iluna</span>
-                <span x-show="darkMode">☀ Modu Argia</span>
-            </button>
-        </header>
 
-        <!-- BARRA DE NAVEGACIÓN RÁPIDA (ENLACES EXTERNOS Y FILTROS INTERNOS) -->
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex flex-wrap gap-2 items-center justify-between">
-            <div class="flex flex-wrap gap-2 items-center w-full lg:w-auto">
-                <span class="text-xs font-bold text-slate-400 px-2 uppercase tracking-wider">Atalak / Estekak:</span>
-                
-                <!-- Botón Inicio / Todos -->
-                <button @click="selectedLibro = ''; selectedMintegia = ''" 
+            <!-- Enlaces rápidos a sub-dashboards + Modu Iluna/Argia -->
+            <div class="flex flex-wrap gap-2 items-center">
+                <button @click="resetFilters()" 
                         class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
-                        :class="!selectedLibro && !selectedMintegia ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
+                        :class="!selectedLibro && !selectedMintegia && !selectedCurso && !searchQuery ? 'bg-indigo-600 text-white shadow-sm' : (darkMode ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' : 'bg-slate-100 text-slate-700 hover:bg-slate-200')">
                     Guztiak (Nagusia)
                 </button>
 
-                <!-- Enlace Externo a NODOAK (Vercel) -->
                 <a href="https://prozesuendashboarada.vercel.app/" target="_blank" 
-                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-amber-400 hover:bg-slate-700 border border-amber-500/30 transition flex items-center gap-1.5">
+                   :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-amber-50 hover:bg-amber-100'"
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold text-amber-400 border border-amber-500/30 transition flex items-center gap-1.5">
                     <span>NODOEN ZAINTZA ↗</span>
                 </a>
 
-                <!-- Enlace Externo a MINTEGIAK (Netlify) -->
                 <a href="https://zaintzaorokorra.netlify.app/" target="_blank" 
-                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-pink-400 hover:bg-slate-700 border border-pink-500/30 transition flex items-center gap-1.5">
+                   :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-pink-50 hover:bg-pink-100'"
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold text-pink-400 border border-pink-500/30 transition flex items-center gap-1.5">
                     <span>MINTEGIEN ZAINTZA ↗</span>
                 </a>
 
-                <!-- Enlace Externo a DUALA (GitHub Pages) -->
                 <a href="https://albert23333.github.io/DUALA/index.html" target="_blank" 
-                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-teal-400 hover:bg-slate-700 border border-teal-500/30 transition flex items-center gap-1.5">
+                   :class="darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-teal-50 hover:bg-teal-100'"
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold text-teal-400 border border-teal-500/30 transition flex items-center gap-1.5">
                     <span>DUALA ↗</span>
                 </a>
-            </div>
-        </div>
 
-        <!-- BARRA DE HERRAMIENTAS Y FILTROS UNIFICADA -->
-        <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
-                <span class="text-slate-400">🔍</span>
-                <input type="text" x-model="searchQuery" placeholder="Bilatu nodoak, prozesuak edo eremuak..." class="bg-transparent border-none text-slate-100 w-full focus:outline-none text-sm">
+                <button @click="darkMode = !darkMode" 
+                        :class="darkMode ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700' : 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200'"
+                        class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ml-1">
+                    <span x-show="!darkMode">🌙 Modu Iluna</span>
+                    <span x-show="darkMode">☀ Modu Argia</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- BARRA DE BÚSQUEDA Y FILTROS GLOBALES -->
+        <div class="flex flex-col md:flex-row gap-3">
+            <div :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="flex-1 border rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-sm">
+                <span class="opacity-50">🔍</span>
+                <input type="text" x-model="searchQuery" placeholder="Bilatu nodoak, prozesuak, iturriak edo eremuak..." class="bg-transparent border-none w-full focus:outline-none text-sm">
+                <button x-show="searchQuery" @click="searchQuery = ''" class="text-xs opacity-50 hover:opacity-100 cursor-pointer">✕</button>
             </div>
             <div class="flex gap-3">
-                <!-- NODO GLOBALA -->
-                <select x-model="selectedLibro" @change="selectedMintegia = ''" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none cursor-pointer">
+                <select x-model="selectedLibro" @change="selectedMintegia = ''" :class="darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-800'" class="border px-4 py-2.5 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer shadow-sm">
                     <option value="">Nodo Globala (Denak)</option>
                     <template x-for="libro in uniqueLibros" :key="libro">
                         <option :value="libro" x-text="libro"></option>
                     </template>
                 </select>
-                <!-- PROZESU MOTA -->
-                <select x-model="selectedCurso" class="bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl text-sm focus:outline-none cursor-pointer">
-                    <option value="">Prozesu Mota (Denak)</option>
+                <select x-model="selectedCurso" :class="darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-800'" class="border px-4 py-2.5 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer shadow-sm">
+                    <option value="">Ikasturtea / Mota (Denak)</option>
                     <template x-for="curso in uniqueCursos" :key="curso">
                         <option :value="curso" x-text="curso"></option>
                     </template>
@@ -83,324 +83,352 @@
             </div>
         </div>
 
-        <!-- CUERPO PRINCIPAL ESTRUCTURADO EN 4 COLUMNAS SIMÉTRICAS -->
-        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <!-- ========================================================== -->
+        <!-- CUERPO PRINCIPAL EN 4 COLUMNAS CON INFOGRAFÍAS MODERNAS    -->
+        <!-- ========================================================== -->
+        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
 
-            <!-- ========================================== -->
-            <!-- COLUMNA 1: NODOEN ZAINTZA                  -->
-            <!-- ========================================== -->
-            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+            <!-- 1. COLUMNA: NODOEN ZAINTZA (BATERÍAS VERTICALES + ANILLO) -->
+            <section :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="border p-5 rounded-2xl flex flex-col justify-between shadow-sm transition-colors">
                 <div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <h2 class="text-base font-bold tracking-wider text-slate-200">NODOEN ZAINTZA</h2>
-                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#f59e0b_0deg_90deg,#10b981_90deg_180deg,#3b82f6_180deg_270deg,#a855f7_270deg_360deg)] p-1 flex items-center justify-center shadow-lg">
-                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsNodos.total">0</div>
+                    <div class="flex justify-between items-center border-b border-slate-800/60 pb-3 mb-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">01 • IKUSPEGI OROKORRA</span>
+                            <h2 class="text-sm font-bold tracking-wide">NODOEN ZAINTZA</h2>
+                        </div>
+                        <!-- Anillo SVG Seccionado -->
+                        <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+                            <svg class="w-12 h-12 -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#1e293b' : '#e2e8f0'" stroke-width="14" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#f59e0b" stroke-width="14" stroke-dasharray="238.76" stroke-dashoffset="45" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#0f172a' : '#ffffff'" stroke-width="15" stroke-dasharray="3 20.87" />
+                            </svg>
+                            <span class="absolute text-xs font-black" x-text="statsNodos.total">0</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 mb-6">
-                        
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">IKASTURTEA BANAKETA</span>
-                                <span class="text-base font-bold text-white" x-text="uniqueCursos.length">0</span>
+                    <!-- 4 Baterías verticales de nodos -->
+                    <div class="grid grid-cols-4 gap-2 items-end mb-4">
+                        <template x-for="(n, idx) in nodoBreakdown" :key="n.label">
+                            <div class="flex flex-col items-center gap-1">
+                                <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="w-10 h-14 rounded-lg border-2 border-dashed border-amber-500/40 p-0.5 flex flex-col justify-end relative">
+                                    <div class="w-3.5 h-1 bg-amber-500/40 rounded-t-sm absolute -top-1.5 left-1/2 -translate-x-1/2"></div>
+                                    <div class="w-full rounded-sm transition-all duration-500"
+                                         :class="['bg-gradient-to-t from-amber-600 to-amber-400', 'bg-gradient-to-t from-emerald-600 to-teal-400', 'bg-gradient-to-t from-blue-600 to-indigo-400', 'bg-gradient-to-t from-purple-600 to-pink-400'][idx % 4]"
+                                         :style="'height: ' + Math.max(16, n.pct) + '%'"></div>
+                                    <span class="absolute inset-0 flex items-center justify-center text-[10px] font-black drop-shadow" x-text="n.pct + '%'"></span>
+                                </div>
+                                <span class="text-[9px] font-semibold opacity-75 truncate max-w-full" x-text="n.short"></span>
                             </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
-                                <div class="bg-emerald-500 h-full rounded-full" style="width: 25%;"></div>
-                            </div>
-                        </div>
+                        </template>
+                    </div>
 
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">MINTEGIAK</span>
-                                <span class="text-base font-bold text-white" x-text="uniqueMintegias.length">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
-                                <div class="bg-gradient-to-r from-emerald-500 to-purple-500 h-full rounded-full" style="width: 25%;"></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                                <span class="text-base font-bold text-white" x-text="statsNodos.total">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
-                                <div class="bg-gradient-to-r from-orange-500 via-emerald-500 to-purple-500 h-full rounded-full" style="width: 100%;"></div>
-                            </div>
-                        </div>
-
-                        <!-- ZERBITZUAK NODOA -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <span class="text-[11px] font-semibold text-slate-300 mb-1">ZERBITZUAK NODOA</span>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Hautatu Zerbitzua --</option>
-                                <template x-for="mintegia in p04Mintegias" :key="mintegia">
-                                    <option :value="mintegia" x-text="mintegia"></option>
-                                </template>
-                            </select>
-                        </div>
-
+                    <!-- Selector Zerbitzuak -->
+                    <div :class="darkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'" class="border p-2.5 rounded-xl mb-4">
+                        <label class="block text-[10px] font-bold opacity-60 uppercase mb-1">ZERBITZUAK NODOA</label>
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-200' : 'bg-white border-slate-300 text-slate-800'" class="w-full border text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">-- Hautatu Zerbitzua --</option>
+                            <template x-for="mintegia in p04Mintegias" :key="mintegia">
+                                <option :value="mintegia" x-text="mintegia"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
 
-                <!-- LEYENDA NODOEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
-                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">NODOEN ESTATISTIKAK</h3>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                <!-- Estadísticas compactas 2x2 -->
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] pt-2 border-t border-slate-800/60">
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Guztira:</span>
                         <span class="font-bold text-indigo-400" x-text="statsNodos.total">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Onartua:</span>
                         <span class="font-bold text-emerald-400" x-text="statsNodos.onartua">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Analisian:</span>
                         <span class="font-bold text-amber-400" x-text="statsNodos.analisian">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Baztertua:</span>
                         <span class="font-bold text-rose-400" x-text="statsNodos.baztertua">0</span>
                     </div>
                 </div>
-
             </section>
 
-            <!-- ========================================== -->
-            <!-- COLUMNA 2: PROZESUEN ZAINTZA               -->
-            <!-- ========================================== -->
-            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+            <!-- 2. COLUMNA: PROZESUEN ZAINTZA (EMBUDO + SELECTORES P01-P03) -->
+            <section :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="border p-5 rounded-2xl flex flex-col justify-between shadow-sm transition-colors">
                 <div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <h2 class="text-base font-bold tracking-wider text-slate-200">PROZESUEN ZAINTZA</h2>
+                    <div class="flex justify-between items-center border-b border-slate-800/60 pb-3 mb-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">02 • PROZESUAK</span>
+                            <h2 class="text-sm font-bold tracking-wide">PROZESUEN ZAINTZA</h2>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-black bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" x-text="statsProzesuak.total">0</span>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 mb-6">
-
-                        <!-- BLOQUE P01 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P01 - IKASKUNTZA ↗</span>
-                            </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Hautatu Ambitoa --</option>
-                                <template x-for="m in p01Mintegias" :key="m">
-                                    <option :value="m" x-text="m"></option>
-                                </template>
-                            </select>
+                    <!-- Embudo Visual P01 / P02 / P03 -->
+                    <div class="flex flex-col items-center space-y-1 mb-4">
+                        <div class="w-full bg-gradient-to-r from-indigo-600 to-blue-500 text-white py-1 px-3 rounded-t-lg text-[11px] font-bold flex justify-between"
+                             style="clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);">
+                            <span class="pl-1">P01 Ikaskuntza</span>
+                            <span class="pr-1" x-text="p01Count">0</span>
                         </div>
-
-                        <!-- BLOQUE P02 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P02 - ANTOLAKETA eta BALIABIDEAK ↗</span>
-                            </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Hautatu Ambitoa --</option>
-                                <template x-for="m in p02Mintegias" :key="m">
-                                    <option :value="m" x-text="m"></option>
-                                </template>
-                            </select>
+                        <div class="w-[88%] bg-gradient-to-r from-purple-600 to-indigo-500 text-white py-1 px-3 text-[11px] font-bold flex justify-between"
+                             style="clip-path: polygon(0 0, 100% 0, 94% 100%, 6% 100%);">
+                            <span class="pl-1">P02 Antolaketa</span>
+                            <span class="pr-1" x-text="p02Count">0</span>
                         </div>
-
-                        <!-- BLOQUE P03 -->
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl flex flex-col gap-1.5 col-span-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs font-bold text-white">P03 - ERANTZUKIZUN SOZIALA ↗</span>
-                            </div>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-800 text-slate-300 text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Hautatu Ambitoa --</option>
-                                <template x-for="m in p03Mintegias" :key="m">
-                                    <option :value="m" x-text="m"></option>
-                                </template>
-                            </select>
+                        <div class="w-[76%] bg-gradient-to-r from-pink-600 to-purple-500 text-white py-1 px-3 rounded-b-lg text-[11px] font-bold flex justify-between"
+                             style="clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);">
+                            <span class="pl-1">P03 Erantzukizuna</span>
+                            <span class="pr-1" x-text="p03Count">0</span>
                         </div>
+                    </div>
 
+                    <!-- Selectores compactos P01, P02, P03 -->
+                    <div class="space-y-2 mb-4">
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">P01 - IKASKUNTZA (Denak)</option>
+                            <template x-for="m in p01Mintegias" :key="m">
+                                <option :value="m" x-text="m"></option>
+                            </template>
+                        </select>
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">P02 - ANTOLAKETA (Denak)</option>
+                            <template x-for="m in p02Mintegias" :key="m">
+                                <option :value="m" x-text="m"></option>
+                            </template>
+                        </select>
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-800'" class="w-full border text-[11px] p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">P03 - ERANTZUKIZUN SOZIALA (Denak)</option>
+                            <template x-for="m in p03Mintegias" :key="m">
+                                <option :value="m" x-text="m"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
 
-                <!-- LEYENDA PROZESUEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
-                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">PROZESUEN ESTATISTIKAK</h3>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                <!-- Estadísticas compactas 2x2 -->
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] pt-2 border-t border-slate-800/60">
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Guztira:</span>
                         <span class="font-bold text-indigo-400" x-text="statsProzesuak.total">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Onartua:</span>
                         <span class="font-bold text-emerald-400" x-text="statsProzesuak.onartua">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Analisian:</span>
                         <span class="font-bold text-amber-400" x-text="statsProzesuak.analisian">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Baztertua:</span>
                         <span class="font-bold text-rose-400" x-text="statsProzesuak.baztertua">0</span>
                     </div>
                 </div>
-
             </section>
 
-            <!-- ========================================== -->
-            <!-- COLUMNA 3: MINTEGIEN ZAINTZA               -->
-            <!-- ========================================== -->
-            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+            <!-- 3. COLUMNA: MINTEGIEN ZAINTZA (BATERÍAS HORIZONTALES + ANILLO) -->
+            <section :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="border p-5 rounded-2xl flex flex-col justify-between shadow-sm transition-colors">
                 <div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <h2 class="text-base font-bold tracking-wider text-slate-200">MINTEGIEN ZAINTZA</h2>
-                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#3b82f6_0deg_180deg,#ec4899_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
-                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsMintegiak.total">62</div>
+                    <div class="flex justify-between items-center border-b border-slate-800/60 pb-3 mb-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-pink-400">03 • DEPARTAMENTUAK</span>
+                            <h2 class="text-sm font-bold tracking-wide">MINTEGIEN ZAINTZA</h2>
+                        </div>
+                        <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+                            <svg class="w-12 h-12 -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#1e293b' : '#e2e8f0'" stroke-width="14" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#ec4899" stroke-width="14" stroke-dasharray="238.76" stroke-dashoffset="60" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#0f172a' : '#ffffff'" stroke-width="15" stroke-dasharray="3 20.87" />
+                            </svg>
+                            <span class="absolute text-xs font-black" x-text="statsMintegiak.total">0</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 mb-6">
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                                <span class="text-base font-bold text-white" x-text="statsMintegiak.total">62</span>
+                    <!-- Baterías horizontales de estado -->
+                    <div class="space-y-2.5 mb-4">
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="text-emerald-400 font-semibold">Onartua</span>
+                                <span class="font-bold" x-text="statsMintegiak.onartua">0</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-blue-500 h-full rounded-full" style="width: 100%;"></div>
+                            <div class="flex items-center">
+                                <div :class="darkMode ? 'bg-slate-950' : 'bg-slate-100'" class="w-full h-3 rounded border border-dashed border-emerald-500/40 p-0.5">
+                                    <div class="bg-emerald-500 h-full rounded-xs transition-all duration-500" :style="'width: ' + (statsMintegiak.total ? Math.max(4, (statsMintegiak.onartua/statsMintegiak.total)*100) : 0) + '%'"></div>
+                                </div>
+                                <div class="w-1 h-1.5 bg-emerald-500/40 rounded-r-sm"></div>
                             </div>
                         </div>
 
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <span class="text-[11px] font-semibold text-slate-300 mb-1">HAUTATU MINTEGIA / DEPARTAMENTUA</span>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Denak (Guztiak) --</option>
-                                <template x-for="mintegia in uniqueMintegias" :key="mintegia">
-                                    <option :value="mintegia" x-text="mintegia"></option>
-                                </template>
-                            </select>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="text-amber-400 font-semibold">Analisian</span>
+                                <span class="font-bold" x-text="statsMintegiak.analisian">0</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div :class="darkMode ? 'bg-slate-950' : 'bg-slate-100'" class="w-full h-3 rounded border border-dashed border-amber-500/40 p-0.5">
+                                    <div class="bg-amber-500 h-full rounded-xs transition-all duration-500" :style="'width: ' + (statsMintegiak.total ? Math.max(4, (statsMintegiak.analisian/statsMintegiak.total)*100) : 0) + '%'"></div>
+                                </div>
+                                <div class="w-1 h-1.5 bg-amber-500/40 rounded-r-sm"></div>
+                            </div>
                         </div>
 
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="text-rose-400 font-semibold">Baztertua</span>
+                                <span class="font-bold" x-text="statsMintegiak.baztertua">0</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div :class="darkMode ? 'bg-slate-950' : 'bg-slate-100'" class="w-full h-3 rounded border border-dashed border-rose-500/40 p-0.5">
+                                    <div class="bg-rose-500 h-full rounded-xs transition-all duration-500" :style="'width: ' + (statsMintegiak.total ? Math.max(4, (statsMintegiak.baztertua/statsMintegiak.total)*100) : 0) + '%'"></div>
+                                </div>
+                                <div class="w-1 h-1.5 bg-rose-500/40 rounded-r-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selector Mintegia -->
+                    <div :class="darkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'" class="border p-2.5 rounded-xl mb-4">
+                        <label class="block text-[10px] font-bold opacity-60 uppercase mb-1">HAUTATU MINTEGIA</label>
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-200' : 'bg-white border-slate-300 text-slate-800'" class="w-full border text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">-- Denak (Guztiak) --</option>
+                            <template x-for="mintegia in uniqueMintegias" :key="mintegia">
+                                <option :value="mintegia" x-text="mintegia"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
 
-                <!-- LEYENDA MINTEGIEN ZAINTZA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
-                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">MINTEGIEN ESTATISTIKAK</h3>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">a) Erregistro kopurua:</span>
-                        <span class="font-bold text-indigo-400" x-text="statsMintegiak.total">62</span>
+                <!-- Estadísticas compactas 2x2 -->
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] pt-2 border-t border-slate-800/60">
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Guztira:</span>
+                        <span class="font-bold text-indigo-400" x-text="statsMintegiak.total">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Onartua:</span>
                         <span class="font-bold text-emerald-400" x-text="statsMintegiak.onartua">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Analisian:</span>
                         <span class="font-bold text-amber-400" x-text="statsMintegiak.analisian">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Baztertua:</span>
                         <span class="font-bold text-rose-400" x-text="statsMintegiak.baztertua">0</span>
                     </div>
                 </div>
-
             </section>
 
-            <!-- ========================================== -->
-            <!-- COLUMNA 4: DUALA                           -->
-            <!-- ========================================== -->
-            <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+            <!-- 4. COLUMNA: DUALA (ANILLO SECCIONADO TEAL + SELECTOR) -->
+            <section :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="border p-5 rounded-2xl flex flex-col justify-between shadow-sm transition-colors">
                 <div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <a href="https://albert23333.github.io/DUALA/index.html" target="_blank" class="text-base font-bold tracking-wider text-teal-400 hover:underline flex items-center gap-1.5">
-                            <span>DUALA ↗</span>
-                        </a>
-                        <div class="w-12 h-12 rounded-full bg-[conic-gradient(#14b8a6_0deg_180deg,#06b6d4_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
-                            <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsDuala.total">0</div>
+                    <div class="flex justify-between items-center border-b border-slate-800/60 pb-3 mb-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-teal-400">04 • FP DUALA</span>
+                            <a href="https://albert23333.github.io/DUALA/index.html" target="_blank" class="text-sm font-bold tracking-wide text-teal-400 hover:underline flex items-center gap-1">
+                                <span>DUALA ↗</span>
+                            </a>
+                        </div>
+                        <div class="relative w-12 h-12 flex items-center justify-center shrink-0">
+                            <svg class="w-12 h-12 -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#1e293b' : '#e2e8f0'" stroke-width="14" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#14b8a6" stroke-width="14" stroke-dasharray="238.76" stroke-dashoffset="30" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" :stroke="darkMode ? '#0f172a' : '#ffffff'" stroke-width="15" stroke-dasharray="3 20.87" />
+                            </svg>
+                            <span class="absolute text-xs font-black" x-text="statsDuala.total">0</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 mb-6">
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-[11px] font-semibold text-slate-400">INFORMAZIO ITURRIAK (C)</span>
-                                <span class="text-base font-bold text-white" x-text="statsDuala.total">0</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                                <div class="bg-teal-500 h-full rounded-full" style="width: 100%;"></div>
-                            </div>
+                    <!-- Tarjeta visual de proporción DUALA -->
+                    <div :class="darkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-teal-50/50 border-teal-100'" class="border p-3.5 rounded-xl mb-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-[11px] font-semibold opacity-70">Ekosistemako pisua</p>
+                            <p class="text-2xl font-black text-teal-400 mt-0.5" x-text="(statsNodos.total ? Math.round((statsDuala.total / statsNodos.total) * 100) : 0) + '%'"></p>
+                            <p class="text-[10px] opacity-60 mt-0.5" x-text="statsDuala.total + ' / ' + statsNodos.total + ' erregistro'"></p>
                         </div>
-
-                        <div class="bg-slate-950/60 border border-slate-800/80 p-3 rounded-xl col-span-2 flex flex-col justify-between">
-                            <span class="text-[11px] font-semibold text-slate-300 mb-1">DUALA ESPARRUA / EREMUA</span>
-                            <select x-model="selectedMintegia" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs p-2 rounded-lg focus:outline-none cursor-pointer">
-                                <option value="">-- Denak (Guztiak) --</option>
-                                <template x-for="dualaItem in dualaMintegias" :key="dualaItem">
-                                    <option :value="dualaItem" x-text="dualaItem"></option>
-                                </template>
-                            </select>
+                        <div class="w-12 h-16 rounded-lg border-2 border-dashed border-teal-500/50 p-1 flex flex-col justify-end relative bg-slate-950/40">
+                            <div class="w-4 h-1 bg-teal-500/50 rounded-t-sm absolute -top-1.5 left-1/2 -translate-x-1/2"></div>
+                            <div class="w-full bg-gradient-to-t from-teal-600 to-cyan-400 rounded-sm transition-all duration-500"
+                                 :style="'height: ' + Math.max(18, (statsNodos.total ? Math.round((statsDuala.total / statsNodos.total) * 100) : 0)) + '%'"></div>
                         </div>
+                    </div>
 
+                    <!-- Selector Duala -->
+                    <div :class="darkMode ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'" class="border p-2.5 rounded-xl mb-4">
+                        <label class="block text-[10px] font-bold opacity-60 uppercase mb-1">DUALA ESPARRUA</label>
+                        <select x-model="selectedMintegia" :class="darkMode ? 'bg-slate-900 border-slate-700 text-slate-200' : 'bg-white border-slate-300 text-slate-800'" class="w-full border text-xs p-1.5 rounded-lg focus:outline-none cursor-pointer">
+                            <option value="">-- Denak (Guztiak) --</option>
+                            <template x-for="dualaItem in dualaMintegias" :key="dualaItem">
+                                <option :value="dualaItem" x-text="dualaItem"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
 
-                <!-- LEYENDA DUALA -->
-                <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-xl mt-auto space-y-2 text-xs">
-                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">DUALA ESTATISTIKAK</h3>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">a) Erregistro kopurua:</span>
+                <!-- Estadísticas compactas 2x2 -->
+                <div class="grid grid-cols-2 gap-1.5 text-[11px] pt-2 border-t border-slate-800/60">
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Guztira:</span>
                         <span class="font-bold text-indigo-400" x-text="statsDuala.total">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">b) Zenbat onartua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Onartua:</span>
                         <span class="font-bold text-emerald-400" x-text="statsDuala.onartua">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">d) Zenbat analisian:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Analisian:</span>
                         <span class="font-bold text-amber-400" x-text="statsDuala.analisian">0</span>
                     </div>
-                    <div class="flex justify-between items-center bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800">
-                        <span class="text-slate-300">e) Zenbat baztertua:</span>
+                    <div :class="darkMode ? 'bg-slate-950/70' : 'bg-slate-100'" class="px-2.5 py-1.5 rounded-lg flex justify-between">
+                        <span class="opacity-70">Baztertua:</span>
                         <span class="font-bold text-rose-400" x-text="statsDuala.baztertua">0</span>
                     </div>
                 </div>
-
             </section>
 
         </main>
 
-        <!-- TABLA INFERIOR DE DATOS DETALLADOS -->
-        <section class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider" x-text="'Erakusten: ' + filteredRows.length + ' erregistro'"></span>
+        <!-- TABLA INFERIOR CON CABECERA FIJA -->
+        <section :class="darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'" class="border rounded-2xl overflow-hidden shadow-sm transition-colors">
+            <div class="px-5 py-3 border-b border-slate-800/60 flex justify-between items-center">
+                <span class="text-xs font-bold opacity-70 uppercase tracking-wider" x-text="'Erakusten: ' + filteredRows.length + ' erregistro'"></span>
+                <button x-show="selectedLibro || selectedMintegia || selectedCurso || searchQuery" @click="resetFilters()" class="text-xs text-indigo-400 hover:underline font-semibold cursor-pointer">
+                    Garbitu iragazkiak ✕
+                </button>
             </div>
-            <div class="overflow-x-auto">
+            <div class="overflow-auto max-h-[420px]">
                 <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-950/50 border-b border-slate-800 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                            <th class="p-4">NODOA</th>
-                            <th class="p-4">Ikasturtea</th>
-                            <th class="p-4">ESPARRUA</th>
-                            <th class="p-4">Iturria / Esteka</th>
-                            <th class="p-4">1. Egoera (H)</th>
-                            <th class="p-4">2. Egoera (L)</th>
+                    <thead class="sticky top-0 z-10">
+                        <tr :class="darkMode ? 'bg-slate-950 border-slate-800 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'" class="border-b text-[11px] font-bold uppercase tracking-wider">
+                            <th class="p-3.5">NODOA</th>
+                            <th class="p-3.5">Ikasturtea</th>
+                            <th class="p-3.5">ESPARRUA</th>
+                            <th class="p-3.5">Iturria / Esteka</th>
+                            <th class="p-3.5">1. Egoera (H)</th>
+                            <th class="p-3.5">2. Egoera (L)</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800 text-sm">
+                    <tbody :class="darkMode ? 'divide-slate-800' : 'divide-slate-100'" class="divide-y text-xs">
                         <template x-for="row in filteredRows" :key="row.id">
-                            <tr class="hover:bg-slate-800/40 transition">
-                                <td class="p-4">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400" x-text="row.libro"></span>
+                            <tr :class="darkMode ? 'hover:bg-slate-800/40' : 'hover:bg-slate-50'" class="transition">
+                                <td class="p-3.5 whitespace-nowrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" x-text="row.libro"></span>
                                 </td>
-                                <td class="p-4 font-medium" x-text="row.curso"></td>
-                                <td class="p-4 font-semibold text-slate-300" x-text="row.mintegia"></td>
-                                <td class="p-4">
-                                    <div class="text-xs text-indigo-400 font-medium" x-text="'Iturria: ' + row.iturria"></div>
-                                    <a :href="row.link" target="_blank" class="text-xs text-slate-400 hover:underline truncate block max-w-xs mt-1" x-text="row.link"></a>
+                                <td class="p-3.5 font-medium whitespace-nowrap" x-text="row.curso"></td>
+                                <td class="p-3.5 font-semibold" x-text="row.mintegia"></td>
+                                <td class="p-3.5">
+                                    <div class="text-indigo-400 font-medium" x-text="'Iturria: ' + row.iturria"></div>
+                                    <a :href="row.link" target="_blank" class="opacity-60 hover:underline truncate block max-w-md mt-0.5" x-text="row.link"></a>
                                 </td>
-                                <td class="p-4">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400" x-text="row.egoera1"></span>
+                                <td class="p-3.5 whitespace-nowrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20" x-text="cleanState(row.egoera1)"></span>
                                 </td>
-                                <td class="p-4">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400" x-text="row.egoera2"></span>
+                                <td class="p-3.5 whitespace-nowrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20" x-text="cleanState(row.egoera2)"></span>
                                 </td>
                             </tr>
                         </template>
@@ -416,15 +444,35 @@
         function dashboardData() {
             return {
                 rows: [],
-                darkMode: false,
+                darkMode: true,
                 searchQuery: '',
                 selectedLibro: '',
                 selectedCurso: '',
                 selectedMintegia: '',
-                selectedEgoera1: '',
 
                 init() {
                     this.loadAllGoogleSheets();
+                },
+
+                resetFilters() {
+                    this.searchQuery = '';
+                    this.selectedLibro = '';
+                    this.selectedCurso = '';
+                    this.selectedMintegia = '';
+                },
+
+                cleanState(val) {
+                    if (!val || /^[-–—_.\s]+$/.test(val)) return 'Zehaztu gabe';
+                    return val;
+                },
+
+                calcStats(dataset) {
+                    return {
+                        total: dataset.length,
+                        onartua: dataset.filter(r => (r.egoera1 + ' ' + r.egoera2).toLowerCase().includes('onart')).length,
+                        analisian: dataset.filter(r => (r.egoera1 + ' ' + r.egoera2).toLowerCase().includes('analisi')).length,
+                        baztertua: dataset.filter(r => (r.egoera1 + ' ' + r.egoera2).toLowerCase().includes('bazter')).length
+                    };
                 },
 
                 async loadAllGoogleSheets() {
@@ -470,8 +518,8 @@
                                                     mintegia: mintegiaVal,
                                                     iturria: cols[2] ? String(cols[2]).trim() : 'Zehaztu gabe',
                                                     link: cols[3] ? String(cols[3]).trim() : '',
-                                                    egoera1: cols[7] ? String(cols[7]).trim() : 'Zehaztu gabe',
-                                                    egoera2: cols[11] ? String(cols[11]).trim() : 'Zehaztu gabe'
+                                                    egoera1: cols[7] ? String(cols[7]).trim() : '',
+                                                    egoera2: cols[11] ? String(cols[11]).trim() : ''
                                                 });
                                             }
                                         });
@@ -486,101 +534,59 @@
                     this.rows = allParsedData;
                 },
 
-                calculateStats(dataset) {
-                    const total = dataset.length;
-                    let onartua = 0, analisian = 0, baztertua = 0;
-
-                    dataset.forEach(r => {
-                        const st1 = (r.egoera1 || '').toLowerCase();
-                        const st2 = (r.egoera2 || '').toLowerCase();
-
-                        if (st1.includes('egin') || st1.includes('onartu') || st2.includes('egin') || st2.includes('onartu')) {
-                            onartua++;
-                        } else if (st1.includes('prozesu') || st1.includes('analis') || st1.includes('hasigabe') || st2.includes('prozesu') || st2.includes('analis')) {
-                            analisian++;
-                        } else if (st1.includes('bazter') || st1.includes('ez') || st2.includes('bazter') || st2.includes('ez')) {
-                            baztertua++;
-                        }
-                    });
-
-                    return { total, onartua, analisian, baztertua };
-                },
-
-                get statsNodos() {
-                    return this.calculateStats(this.filteredRows);
-                },
-
-                get statsProzesuak() {
-                    const dataProzesuak = this.filteredRows.filter(r => r.libro !== '04.1.- ZERBITZUAK');
-                    return this.calculateStats(dataProzesuak);
-                },
-
-                get statsMintegiak() {
-                    let dataMintegiak = this.rows.filter(r => r.mintegia && r.mintegia !== '');
-                    if (this.selectedMintegia) {
-                        dataMintegiak = dataMintegiak.filter(r => r.mintegia === this.selectedMintegia);
-                    }
-                    return this.calculateStats(dataMintegiak);
-                },
-
-                get statsDuala() {
-                    let dataDuala = this.rows.filter(r => 
-                        (r.libro && r.libro.toLowerCase().includes('duala')) ||
-                        (r.mintegia && r.mintegia.toLowerCase().includes('duala')) ||
-                        (r.iturria && r.iturria.toLowerCase().includes('duala'))
-                    );
-                    if (this.selectedMintegia) {
-                        dataDuala = dataDuala.filter(r => r.mintegia === this.selectedMintegia);
-                    }
-                    return this.calculateStats(dataDuala);
-                },
-
-                get dualaMintegias() {
-                    return [...new Set(this.rows.filter(r => 
-                        (r.libro && r.libro.toLowerCase().includes('duala')) ||
-                        (r.mintegia && r.mintegia.toLowerCase().includes('duala'))
-                    ).map(r => r.mintegia))].filter(Boolean).sort();
-                },
-
                 get uniqueLibros() { return [...new Set(this.rows.map(r => r.libro))].filter(Boolean).sort(); },
                 get uniqueCursos() { return [...new Set(this.rows.map(r => r.curso))].filter(Boolean).sort(); },
-                
-                get p01Mintegias() {
-                    return [...new Set(this.rows.filter(r => r.libro === '01.- ESTRATEGIA').map(r => r.mintegia))].filter(Boolean).sort();
-                },
-                get p02Mintegias() {
-                    return [...new Set(this.rows.filter(r => r.libro === '02.- OPERATIBA').map(r => r.mintegia))].filter(Boolean).sort();
-                },
-                get p03Mintegias() {
-                    return [...new Set(this.rows.filter(r => r.libro === '03.- SORTZAILEA').map(r => r.mintegia))].filter(Boolean).sort();
-                },
-                get p04Mintegias() {
-                    return [...new Set(this.rows.filter(r => r.libro === '04.1.- ZERBITZUAK').map(r => r.mintegia))].filter(Boolean).sort();
-                },
+                get uniqueMintegias() { return [...new Set(this.rows.map(r => r.mintegia))].filter(Boolean).sort(); },
 
-                get uniqueMintegias() {
-                    let dataFiltered = this.rows;
-                    if (this.selectedLibro) {
-                        dataFiltered = dataFiltered.filter(r => r.libro === this.selectedLibro);
-                    }
-                    return [...new Set(dataFiltered.map(r => r.mintegia))].filter(Boolean).sort();
-                },
-
-                get uniqueEgoera1() { return [...new Set(this.rows.map(r => r.egoera1))].filter(Boolean).sort(); },
-                get uniqueEgoera2() { return [...new Set(this.rows.map(r => r.egoera2))].filter(Boolean).sort(); },
+                get p01Mintegias() { return [...new Set(this.rows.filter(r => r.libro.includes('01')).map(r => r.mintegia))].filter(Boolean).sort(); },
+                get p02Mintegias() { return [...new Set(this.rows.filter(r => r.libro.includes('02')).map(r => r.mintegia))].filter(Boolean).sort(); },
+                get p03Mintegias() { return [...new Set(this.rows.filter(r => r.libro.includes('03')).map(r => r.mintegia))].filter(Boolean).sort(); },
+                get p04Mintegias() { return [...new Set(this.rows.filter(r => r.libro.includes('04')).map(r => r.mintegia))].filter(Boolean).sort(); },
+                get dualaMintegias() { return [...new Set(this.rows.filter(r => r.mintegia.toLowerCase().includes('duala') || r.iturria.toLowerCase().includes('duala')).map(r => r.mintegia))].filter(Boolean).sort(); },
 
                 get filteredRows() {
                     return this.rows.filter(row => {
-                        const matchesSearch = !this.searchQuery || 
-                            Object.values(row).some(val => String(val).toLowerCase().includes(this.searchQuery.toLowerCase()));
+                        const q = this.searchQuery.toLowerCase();
+                        const matchesSearch = !q ||
+                            row.libro.toLowerCase().includes(q) ||
+                            row.curso.toLowerCase().includes(q) ||
+                            row.mintegia.toLowerCase().includes(q) ||
+                            row.iturria.toLowerCase().includes(q);
 
                         return matchesSearch &&
                                (!this.selectedLibro || row.libro === this.selectedLibro) &&
                                (!this.selectedCurso || row.curso === this.selectedCurso) &&
-                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia) &&
-                               (!this.selectedEgoera1 || row.egoera1 === this.selectedEgoera1);
+                               (!this.selectedMintegia || row.mintegia === this.selectedMintegia);
                     });
-                }
+                },
+
+                get nodoBreakdown() {
+                    const total = this.filteredRows.length;
+                    const labels = [
+                        { key: '01', short: 'Estrat.' },
+                        { key: '02', short: 'Operat.' },
+                        { key: '03', short: 'Sortz.' },
+                        { key: '04', short: 'Zerbitz.' }
+                    ];
+                    return labels.map(item => {
+                        const count = this.filteredRows.filter(r => r.libro.startsWith(item.key)).length;
+                        return {
+                            label: item.key,
+                            short: item.short,
+                            count,
+                            pct: total ? Math.round((count / total) * 100) : 0
+                        };
+                    });
+                },
+
+                get p01Count() { return this.filteredRows.filter(r => r.libro.startsWith('01')).length; },
+                get p02Count() { return this.filteredRows.filter(r => r.libro.startsWith('02')).length; },
+                get p03Count() { return this.filteredRows.filter(r => r.libro.startsWith('03')).length; },
+
+                get statsNodos() { return this.calcStats(this.filteredRows); },
+                get statsProzesuak() { return this.calcStats(this.filteredRows.filter(r => !r.libro.startsWith('04'))); },
+                get statsMintegiak() { return this.calcStats(this.filteredRows.filter(r => !r.mintegia.toLowerCase().includes('duala'))); },
+                get statsDuala() { return this.calcStats(this.filteredRows.filter(r => r.mintegia.toLowerCase().includes('duala') || r.iturria.toLowerCase().includes('duala'))); }
             }
         }
     </script>
