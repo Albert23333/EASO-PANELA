@@ -51,12 +51,11 @@
                     <span>MINTEGIEN ZAINTZA ↗</span>
                 </a>
 
-                <!-- Filtro rápido DUALA -->
-                <button @click="selectedLibro = 'DUALA'" 
-                        class="px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
-                        :class="selectedLibro === 'DUALA' ? 'bg-teal-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'">
-                    DUALA
-                </button>
+                <!-- Enlace Externo a DUALA (GitHub Pages) -->
+                <a href="https://albert23333.github.io/DUALA/index.html" target="_blank" 
+                   class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-teal-400 hover:bg-slate-700 border border-teal-500/30 transition flex items-center gap-1.5">
+                    <span>DUALA ↗</span>
+                </a>
             </div>
         </div>
 
@@ -310,7 +309,9 @@
             <section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-                        <h2 class="text-base font-bold tracking-wider text-slate-200">DUALA</h2>
+                        <a href="https://albert23333.github.io/DUALA/index.html" target="_blank" class="text-base font-bold tracking-wider text-teal-400 hover:underline flex items-center gap-1.5">
+                            <span>DUALA ↗</span>
+                        </a>
                         <div class="w-12 h-12 rounded-full bg-[conic-gradient(#14b8a6_0deg_180deg,#06b6d4_180deg_360deg)] p-1 flex items-center justify-center shadow-lg">
                             <div class="w-9 h-9 bg-slate-900 rounded-full flex items-center justify-center text-xs font-bold text-white" x-text="statsDuala.total">0</div>
                         </div>
